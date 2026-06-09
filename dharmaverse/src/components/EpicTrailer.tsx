@@ -21,7 +21,7 @@ export default function EpicTrailer() {
   }, []);
 
   return (
-    <section className="relative w-full h-screen bg-[#080B12] flex items-center justify-center overflow-hidden">
+    <section className="relative w-full min-h-[100svh] bg-[#080B12] flex items-center justify-center overflow-hidden">
       {/* Background Cinematic Dust / Noise */}
       <div className="absolute inset-0 z-0 opacity-30 mix-blend-overlay pointer-events-none">
         <div className="w-full h-full bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-[#4F8CFF]/20 via-black to-black"></div>

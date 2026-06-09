@@ -2,6 +2,7 @@
 
 import { motion } from "framer-motion";
 import { Sword, Eye, Sparkles, ScrollText } from "lucide-react";
+import Image from "next/image";
 
 const journeys = [
   {
@@ -68,10 +69,12 @@ export default function ChooseJourney() {
             >
               {/* Background Image with Parallax & Darken Effect */}
               <div className="absolute inset-0 z-0 transition-transform duration-1000 group-hover:scale-110">
-                <img
+                <Image
                   src={journey.image}
                   alt={journey.title}
-                  className="w-full h-full object-cover"
+                  fill
+                  sizes="(max-width: 768px) 100vw, 50vw"
+                  className="object-cover"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-[#080B12] via-[#080B12]/80 to-transparent transition-opacity duration-500 group-hover:opacity-80"></div>
                 <div className="absolute inset-0 bg-black/40 group-hover:bg-transparent transition-colors duration-500"></div>

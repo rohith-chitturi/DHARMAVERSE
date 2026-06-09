@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Zap, Sword, Compass } from "lucide-react";
+import Image from "next/image";
 
 const scenes = [
   {
@@ -33,7 +34,7 @@ export default function HeroCarousel() {
   }, []);
 
   return (
-    <section className="relative w-full h-screen overflow-hidden bg-black">
+    <section className="relative w-full min-h-[100svh] overflow-hidden bg-black flex flex-col justify-center">
       {/* Background Images Carousel */}
       <AnimatePresence mode="popLayout">
         <motion.div
@@ -44,10 +45,12 @@ export default function HeroCarousel() {
           transition={{ duration: 2, ease: "easeInOut" }}
           className="absolute inset-0 z-0"
         >
-          <img
+          <Image
             src={scenes[currentScene].image}
             alt={scenes[currentScene].alt}
-            className="w-full h-full object-cover object-center"
+            fill
+            priority
+            className="object-cover object-top"
           />
         </motion.div>
       </AnimatePresence>

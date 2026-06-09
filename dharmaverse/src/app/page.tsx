@@ -3,6 +3,12 @@ import EpicTrailer from "@/components/EpicTrailer";
 import ChooseJourney from "@/components/ChooseJourney";
 import CharacterMatch from "@/components/CharacterMatch";
 import LegendaryMoments from "@/components/LegendaryMoments";
+import ScrollEpic from "@/components/ScrollEpic";
+import PerspectiveEngine from "@/components/PerspectiveEngine";
+import LivingUniverse from "@/components/LivingUniverse";
+import LegendaryVoices from "@/components/LegendaryVoices";
+import FeatureShowcase from "@/components/FeatureShowcase";
+import FinalCTA from "@/components/FinalCTA";
 
 export default function Home() {
   return (
@@ -12,15 +18,12 @@ export default function Home() {
       <ChooseJourney />
       <CharacterMatch />
       <LegendaryMoments />
-      {/* 
-        Remaining sections to be built:
-        - Scroll Through The Epic
-        - Experience Every Perspective
-        - Living Universe
-        - Legendary Voices
-        - Why DHARMAVERSE
-        - Final CTA
-      */}
+      <ScrollEpic />
+      <PerspectiveEngine />
+      <LivingUniverse />
+      <LegendaryVoices />
+      <FeatureShowcase />
+      <FinalCTA />
     </main>
   );
 }

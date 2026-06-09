@@ -2,6 +2,7 @@
 
 import { motion } from "framer-motion";
 import { ChevronRight } from "lucide-react";
+import Image from "next/image";
 
 const characters = [
   {
@@ -10,6 +11,7 @@ const characters = [
     title: "Born a Warrior. Remembered as a Tragedy.",
     quote: "I fought for loyalty. I died for dharma.",
     image: "/assets/karna_hero.png",
+    objectPosition: "object-[center_20%]",
   },
   {
     id: "krishna",
@@ -17,6 +19,7 @@ const characters = [
     title: "The Strategist Beyond Time.",
     quote: "Perform your duty without attachment to the results.",
     image: "/assets/krishna_hero.png",
+    objectPosition: "object-[center_20%]",
   },
   {
     id: "arjuna",
@@ -24,8 +27,32 @@ const characters = [
     title: "The Warrior of Doubt and Destiny.",
     quote: "My mind is restless, O Krishna. How do I find peace?",
     image: "/assets/arjuna_hero.png",
+    objectPosition: "object-[center_20%]",
   },
-  // We can add Draupadi, Bhishma, Vidura here when assets are generated
+  {
+    id: "bhishma",
+    name: "Bhishma",
+    title: "The Sacrifice That Bound The Universe.",
+    quote: "I am bound by my vow. Even if it costs me my soul.",
+    image: "/assets/bhishma_hero.png",
+    objectPosition: "object-bottom",
+  },
+  {
+    id: "draupadi",
+    name: "Draupadi",
+    title: "The Fire Born to Burn an Empire.",
+    quote: "I was born from fire. And I will see this world burn.",
+    image: "/assets/draupadi_hero.png",
+    objectPosition: "object-[center_20%]",
+  },
+  {
+    id: "vidura",
+    name: "Vidura",
+    title: "The Silent Voice of Truth.",
+    quote: "Dharma protects those who protect it.",
+    image: "/assets/vidura_hero.png",
+    objectPosition: "object-top",
+  }
 ];
 
 export default function CharacterMatch() {
@@ -50,14 +77,16 @@ export default function CharacterMatch() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-100px" }}
             transition={{ duration: 1, ease: "easeOut" }}
-            className="group relative w-full h-[60vh] min-h-[500px] overflow-hidden rounded-sm cursor-pointer"
+            className="group relative w-full aspect-[4/5] md:aspect-video lg:h-[80vh] min-h-[500px] overflow-hidden rounded-sm cursor-pointer"
           >
             {/* Background Image & Zoom */}
             <div className="absolute inset-0 z-0 transition-transform duration-1000 group-hover:scale-105">
-              <img
+              <Image
                 src={char.image}
                 alt={char.name}
-                className="w-full h-full object-cover object-center"
+                fill
+                sizes="(max-width: 768px) 100vw, 100vw"
+                className={`object-cover ${char.objectPosition}`}
               />
             </div>
             

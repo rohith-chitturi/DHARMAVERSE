@@ -2,6 +2,7 @@
 
 import { motion } from "framer-motion";
 import { PlayCircle } from "lucide-react";
+import Image from "next/image";
 
 const moments = [
   {
@@ -10,20 +11,31 @@ const moments = [
     description: "The fateful roll that altered destiny forever.",
     image: "/assets/dice_game.png",
     alignment: "left",
+    objectPosition: "object-[center_20%]"
+  },
+  {
+    id: "draupadi-sabha",
+    title: "The Grand Sabha",
+    description: "A Queen's fury that burned an empire.",
+    image: "/assets/draupadi_hero.png",
+    alignment: "right",
+    objectPosition: "object-[center_20%]"
   },
   {
     id: "karna-vs-arjuna",
     title: "Karna vs Arjuna",
     description: "The ultimate clash of dharma and destiny.",
-    image: "/assets/arjuna_hero.png", // reusing asset
-    alignment: "right",
+    image: "/assets/arjuna_hero.png", 
+    alignment: "left",
+    objectPosition: "object-[center_20%]"
   },
   {
     id: "bhishma-vow",
     title: "Bhishma's Vow",
     description: "The sacrifice that bound the universe.",
-    image: "/assets/krishna_hero.png", // reusing asset
-    alignment: "left",
+    image: "/assets/bhishma_hero.png", 
+    alignment: "right",
+    objectPosition: "object-bottom"
   }
 ];
 
@@ -63,10 +75,12 @@ export default function LegendaryMoments() {
             >
               {/* Background Image with Parallax & Netflix zoom */}
               <div className="absolute inset-0 z-0">
-                <img
+                <Image
                   src={moment.image}
                   alt={moment.title}
-                  className="w-full h-full object-cover transition-transform duration-[1.5s] group-hover:scale-110"
+                  fill
+                  sizes="(max-width: 768px) 100vw, 100vw"
+                  className={`object-cover ${moment.objectPosition} transition-transform duration-[1.5s] group-hover:scale-110`}
                 />
               </div>
 
