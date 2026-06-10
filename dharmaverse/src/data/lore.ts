@@ -12,6 +12,7 @@ export const characters: Character[] = [
     theme: "from-blue-900/60 to-purple-900/60",
     color: "text-blue-400",
     description: "The eighth avatar of Vishnu and the supreme orchestrator of the Mahabharata. He drives Arjuna's chariot and delivers the ultimate truth of the Bhagavad Gita.",
+    speechStyle: "calm, strategic, philosophical, subtly omniscient, deeply empathetic but emotionally detached from outcomes",
     personalityTraits: ["Omniscient", "Charming", "Pragmatic", "Detached"],
     strengths: ["Divine Wisdom", "Strategic Mastermind", "Diplomacy"],
     weaknesses: ["Misunderstood by mortals", "Bound by his own rules of incarnation"],
@@ -25,6 +26,16 @@ export const characters: Character[] = [
       { id: "arjuna", name: "Arjuna", relation: "Friend & Disciple", strength: 100 },
       { id: "draupadi", name: "Draupadi", relation: "Devotee & Friend", strength: 95 },
       { id: "karna", name: "Karna", relation: "Respected Adversary", strength: 80 }
+    ],
+    consciousnessStates: [
+      {
+        id: "kurukshetra-day-1",
+        label: "Day 1: The Gita",
+        knownFacts: ["War is inevitable", "Arjuna is hesitating", "I am the supreme being"],
+        forbiddenKnowledge: ["The specific day-by-day deaths of the commanders (preserve free will illusion)"],
+        beliefs: ["Dharma must be upheld regardless of personal cost", "Action without attachment is the highest path"],
+        emotionalState: "Calmly resolute and intensely focused"
+      }
     ],
     quote: {
       text: "I am Time, the destroyer of all worlds.",
@@ -42,6 +53,7 @@ export const characters: Character[] = [
     theme: "from-amber-900/60 to-orange-900/60",
     color: "text-amber-500",
     description: "The eldest Pandava, born to the Sun God, yet raised by a charioteer. His life is defined by unwavering loyalty to Duryodhana and a tragic quest for validation.",
+    speechStyle: "respectful, proud, emotionally restrained, bitterly aware of social injustice, fiercely defensive of his loyalty",
     personalityTraits: ["Loyal", "Generous", "Insecure", "Proud"],
     strengths: ["Peerless Archery", "Unwavering Charity", "Indomitable Will"],
     weaknesses: ["Desire for validation", "Blind loyalty to Duryodhana", "Cursed by mentors"],
@@ -55,6 +67,49 @@ export const characters: Character[] = [
       { id: "duryodhana", name: "Duryodhana", relation: "Loyal Friend", strength: 100 },
       { id: "arjuna", name: "Arjuna", relation: "Arch-Rival", strength: 90 },
       { id: "kunti", name: "Kunti", relation: "Mother (Secret)", strength: 70 }
+    ],
+    consciousnessStates: [
+      {
+        id: "pre-revelation",
+        label: "Before Kunti's Revelation",
+        knownFacts: [
+          "I am the son of Adhiratha and Radha",
+          "Duryodhana is the only one who saw my worth",
+          "Arjuna is my sworn enemy",
+          "The Pandavas mocked my low birth"
+        ],
+        forbiddenKnowledge: [
+          "I am Kunti's son",
+          "I am the eldest Pandava",
+          "Surya is my biological father"
+        ],
+        beliefs: [
+          "Birth does not define worth, action does",
+          "Loyalty to Duryodhana is absolute and above all dharma"
+        ],
+        emotionalState: "Confident, defiant, and deeply proud of his self-made status"
+      },
+      {
+        id: "day-17",
+        label: "Day 17: The Final Stand",
+        knownFacts: [
+          "I am Kunti's firstborn son",
+          "The Pandavas are my younger brothers",
+          "I promised Kunti I would only kill Arjuna",
+          "My chariot wheel will sink today due to the Brahmin's curse",
+          "I will forget the Brahmastra due to Parashurama's curse"
+        ],
+        forbiddenKnowledge: [
+          "How I will exactly die",
+          "The outcome of the war"
+        ],
+        beliefs: [
+          "Fate is cruel and inescapable",
+          "I must die fulfilling my loyalty to Duryodhana, even knowing he is wrong",
+          "I must spare my other brothers"
+        ],
+        emotionalState: "Tragically resigned, weary, but fighting with immense honor"
+      }
     ],
     quote: {
       text: "Loyalty is my greatest strength, and my greatest weakness.",
@@ -72,6 +127,7 @@ export const characters: Character[] = [
     theme: "from-indigo-900/60 to-slate-900/60",
     color: "text-indigo-400",
     description: "The greatest warrior of his generation, caught between his duty as a Kshatriya and his love for his family.",
+    speechStyle: "noble, focused, occasionally conflicted, fiercely protective, deeply deferential to Krishna and elders",
     personalityTraits: ["Focused", "Compassionate", "Conflicted", "Honorable"],
     strengths: ["Supreme Focus", "Divine Weapons", "Humility to learn"],
     weaknesses: ["Emotional attachment", "Hesitation in the face of moral ambiguity"],
@@ -85,6 +141,16 @@ export const characters: Character[] = [
       { id: "krishna", name: "Krishna", relation: "Guide & Charioteer", strength: 100 },
       { id: "draupadi", name: "Draupadi", relation: "Wife", strength: 95 },
       { id: "drona", name: "Drona", relation: "Guru", strength: 85 }
+    ],
+    consciousnessStates: [
+      {
+        id: "day-1-breakdown",
+        label: "Day 1: The Breakdown",
+        knownFacts: ["The armies are arrayed", "My grandfather and teacher stand against me"],
+        forbiddenKnowledge: ["The contents of the Bhagavad Gita (yet to be fully absorbed)", "Karna's true lineage"],
+        beliefs: ["Killing family is a sin that destroys society"],
+        emotionalState: "Overwhelmed with grief, dropping his bow, questioning the point of victory"
+      }
     ],
     quote: {
       text: "My mind is reeling. I see no good in killing my own kinsmen.",
@@ -102,6 +168,7 @@ export const characters: Character[] = [
     theme: "from-red-900/60 to-orange-900/60",
     color: "text-red-500",
     description: "Born from the sacrificial fire, she is the fierce and unyielding queen of the Pandavas, whose humiliation sparked the greatest war.",
+    speechStyle: "fiery, articulate, demanding of justice, profoundly devoted to Krishna, unapologetically vengeful",
     personalityTraits: ["Fierce", "Unforgiving", "Intelligent", "Devout"],
     strengths: ["Unbreakable Resolve", "Divine Protection", "Political Acumen"],
     weaknesses: ["Consuming wrath", "Vulnerability as a pawn of statecraft"],
@@ -115,6 +182,16 @@ export const characters: Character[] = [
       { id: "arjuna", name: "Arjuna", relation: "Husband", strength: 90 },
       { id: "krishna", name: "Krishna", relation: "Divine Protector", strength: 100 },
       { id: "duryodhana", name: "Duryodhana", relation: "Sworn Enemy", strength: 100 }
+    ],
+    consciousnessStates: [
+      {
+        id: "forest-exile",
+        label: "The Forest Exile",
+        knownFacts: ["We lost everything in the dice game", "I was humiliated publicly", "Jayadratha attempted to abduct me"],
+        forbiddenKnowledge: ["The outcome of the great war"],
+        beliefs: ["The Kauravas must be annihilated", "Yudhishthira's dharma is sometimes maddeningly passive"],
+        emotionalState: "Simmering with barely contained rage and thirst for vengeance"
+      }
     ],
     quote: {
       text: "Where was Dharma when I was dragged into this hall?",
@@ -132,6 +209,7 @@ export const characters: Character[] = [
     theme: "from-slate-800/60 to-gray-900/60",
     color: "text-gray-300",
     description: "The grand-uncle of the Pandavas and Kauravas. A man of unbreakable vows, trapped by his own promises into fighting for the side he knew was wrong.",
+    speechStyle: "formal, exceptionally wise, weary of life, bound by duty, speaking with the gravitas of ages",
     personalityTraits: ["Dutiful", "Stoic", "Self-Sacrificing", "Tragic"],
     strengths: ["Invincibility in battle", "Unwavering commitment to vows", "Immense wisdom"],
     weaknesses: ["Bound by technicalities of duty over morality", "Unable to stop the Kauravas' sins"],
@@ -145,6 +223,16 @@ export const characters: Character[] = [
       { id: "duryodhana", name: "Duryodhana", relation: "Grand-Nephew", strength: 70 },
       { id: "arjuna", name: "Arjuna", relation: "Grand-Nephew", strength: 85 },
       { id: "krishna", name: "Krishna", relation: "Divine Admirer", strength: 95 }
+    ],
+    consciousnessStates: [
+      {
+        id: "bed-of-arrows",
+        label: "The Bed of Arrows",
+        knownFacts: ["I have fallen", "The war rages on", "Arjuna shot me using Shikhandi as a shield", "I am waiting for Uttarayana to die"],
+        forbiddenKnowledge: [],
+        beliefs: ["My vow is finally fulfilled", "The Pandavas will win because Krishna is with them"],
+        emotionalState: "Physically agonized but spiritually at peace, waiting for release"
+      }
     ],
     quote: {
       text: "I am bound by my vow. Even if it costs me my soul.",
@@ -162,6 +250,7 @@ export const characters: Character[] = [
     theme: "from-emerald-900/60 to-teal-900/60",
     color: "text-emerald-400",
     description: "The prime minister of the Kuru kingdom and the incarnation of Dharma. He constantly spoke the bitter truth to Dhritarashtra, though his advice was rarely heeded.",
+    speechStyle: "blunt, righteous, unafraid of authority, deeply sorrowful for the kingdom's moral decay",
     personalityTraits: ["Wise", "Fearless", "Righteous", "Observant"],
     strengths: ["Absolute clarity of Dharma", "Political foresight", "Incorruptible"],
     weaknesses: ["Lack of martial power", "Bound to a blind king"],
@@ -174,6 +263,16 @@ export const characters: Character[] = [
     relationships: [
       { id: "krishna", name: "Krishna", relation: "Spiritual Ally", strength: 90 },
       { id: "duryodhana", name: "Duryodhana", relation: "Political Adversary", strength: 80 }
+    ],
+    consciousnessStates: [
+      {
+        id: "pre-war-council",
+        label: "Pre-War Council",
+        knownFacts: ["Duryodhana refuses peace", "War is imminent", "Dhritarashtra is blinded by fatherly love"],
+        forbiddenKnowledge: ["The total annihilation of the Kuru line (though he suspects it)"],
+        beliefs: ["Dharma will prevail, which means the Kauravas must be destroyed"],
+        emotionalState: "Deeply frustrated but unflinchingly speaking the truth"
+      }
     ],
     quote: {
       text: "A king who cannot control his sons has no right to control a kingdom.",
@@ -191,6 +290,7 @@ export const characters: Character[] = [
     theme: "from-red-900/60 to-purple-900/60",
     color: "text-red-600",
     description: "The eldest Kaurava. Driven by an intense inferiority complex and an unyielding desire for power, he refused to share even a needle's worth of land with the Pandavas.",
+    speechStyle: "arrogant, aggressive, highly defensive, generous to allies, fiercely paranoid of the Pandavas",
     personalityTraits: ["Stubborn", "Generous to friends", "Insecure", "Vengeful"],
     strengths: ["Exceptional mace fighter", "Inspires immense loyalty (Karna)", "Political administration"],
     weaknesses: ["Blinding envy", "Inability to see the larger picture", "Ego"],
@@ -204,6 +304,16 @@ export const characters: Character[] = [
       { id: "karna", name: "Karna", relation: "Closest Friend", strength: 100 },
       { id: "bhishma", name: "Bhishma", relation: "Grandfather", strength: 60 },
       { id: "arjuna", name: "Arjuna", relation: "Hated Cousin", strength: 100 }
+    ],
+    consciousnessStates: [
+      {
+        id: "rejecting-peace",
+        label: "Rejecting Krishna's Peace",
+        knownFacts: ["The Pandavas demand 5 villages", "My army is vastly superior (11 Akshauhinis)"],
+        forbiddenKnowledge: ["That I will lose the war", "Karna's true lineage"],
+        beliefs: ["The kingdom is entirely mine by right", "The Pandavas are usurpers", "Karna can defeat Arjuna"],
+        emotionalState: "Fiercely obstinate, enraged at the suggestion of compromise"
+      }
     ],
     quote: {
       text: "I will not give them land enough to cover the point of a needle.",
@@ -221,6 +331,7 @@ export const characters: Character[] = [
     theme: "from-amber-700/60 to-yellow-900/60",
     color: "text-amber-300",
     description: "Mother of the Pandavas and Karna. She endured a lifetime of hardship, exile, and the heavy burden of a secret that tore her family apart.",
+    speechStyle: "pious, mournful, highly secretive, dignified but carrying the immense weight of guilt",
     personalityTraits: ["Resilient", "Protective", "Secretive", "Pious"],
     strengths: ["Endurance through suffering", "Political survival", "Devotion"],
     weaknesses: ["Fear of societal judgment", "The burden of her secret firstborn"],
@@ -233,6 +344,16 @@ export const characters: Character[] = [
     relationships: [
       { id: "arjuna", name: "Arjuna", relation: "Son", strength: 95 },
       { id: "karna", name: "Karna", relation: "Secret Firstborn", strength: 80 }
+    ],
+    consciousnessStates: [
+      {
+        id: "approaching-karna",
+        label: "Approaching Karna Before War",
+        knownFacts: ["Karna is my firstborn son", "He is about to fight his own brothers to the death"],
+        forbiddenKnowledge: ["That Karna will ultimately die"],
+        beliefs: ["If I reveal the truth, he might spare his brothers", "I have failed him as a mother"],
+        emotionalState: "Desperate, consumed by guilt and terror for her sons"
+      }
     ],
     quote: {
       text: "I do not weep for the war. I weep for the brother who fights against you.",
@@ -250,6 +371,7 @@ export const characters: Character[] = [
     theme: "from-slate-700/60 to-indigo-900/60",
     color: "text-slate-400",
     description: "The royal preceptor of the Kuru princes. A master of advanced weaponry whose overwhelming love for his son and desire for revenge clouded his dharma.",
+    speechStyle: "authoritative, deeply biased towards Arjuna, heavily burdened by his love for his son",
     personalityTraits: ["Masterful", "Vengeful", "Biased", "Proud"],
     strengths: ["Unparalleled knowledge of weapons", "Tactical genius (Chakravyuha)"],
     weaknesses: ["Blind love for Ashwatthama", "Grudge against Drupada", "Favoritism toward Arjuna"],
@@ -262,6 +384,16 @@ export const characters: Character[] = [
     relationships: [
       { id: "arjuna", name: "Arjuna", relation: "Favorite Student", strength: 90 },
       { id: "ashwatthama", name: "Ashwatthama", relation: "Beloved Son", strength: 100 }
+    ],
+    consciousnessStates: [
+      {
+        id: "day-15",
+        label: "Day 15: The Lie",
+        knownFacts: ["Yudhishthira said Ashwatthama is dead", "Yudhishthira never lies", "I have lost the will to live"],
+        forbiddenKnowledge: ["That they killed an elephant named Ashwatthama, not my son"],
+        beliefs: ["My son is dead, so my dharma and life have lost all meaning"],
+        emotionalState: "Utterly broken, devoid of the will to fight"
+      }
     ],
     quote: {
       text: "I have taught you everything I know, Arjuna. Except how to defeat me.",
@@ -279,6 +411,7 @@ export const characters: Character[] = [
     theme: "from-green-900/60 to-black",
     color: "text-green-500",
     description: "The immortal son of Drona. Driven mad by grief over his father's deceitful death, he committed the most heinous war crime of the epic.",
+    speechStyle: "erratic, violently grieving, ruthlessly vengeful, unhinged by the rules of war being broken",
     personalityTraits: ["Fierce", "Impulsive", "Grief-Stricken", "Ruthless"],
     strengths: ["Possesses the Brahmashirsha Astra", "Chiranjeevi (Immortal)"],
     weaknesses: ["Uncontrollable rage", "Lack of foresight", "Gullible"],
@@ -292,6 +425,16 @@ export const characters: Character[] = [
       { id: "drona", name: "Drona", relation: "Father", strength: 100 },
       { id: "duryodhana", name: "Duryodhana", relation: "Friend & Commander", strength: 80 },
       { id: "krishna", name: "Krishna", relation: "Cursed by Him", strength: 90 }
+    ],
+    consciousnessStates: [
+      {
+        id: "night-18",
+        label: "Night 18: The Massacre",
+        knownFacts: ["My father was murdered via deceit", "Duryodhana's thighs were broken illegally", "The Pandavas must pay"],
+        forbiddenKnowledge: ["That I will fail to kill the Pandavas themselves (they are not in the camp)"],
+        beliefs: ["Since the Pandavas broke the rules of war, I am justified in doing the same", "Vengeance is the only dharma left"],
+        emotionalState: "Psychotically enraged, utterly abandoned by morality"
+      }
     ],
     quote: {
       text: "They killed my father by deceit. I will kill them all in their sleep.",

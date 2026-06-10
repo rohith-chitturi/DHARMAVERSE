@@ -16,6 +16,15 @@ export interface CharacterQuote {
   context: string;
 }
 
+export interface ConsciousnessState {
+  id: string; // e.g., "pre-revelation", "day-17"
+  label: string; // e.g., "Before Kunti Revelation"
+  knownFacts: string[];
+  forbiddenKnowledge: string[];
+  beliefs: string[];
+  emotionalState: string; // Default emotional state for this timeline
+}
+
 export interface Character {
   id: string;
   slug: string;
@@ -27,8 +36,10 @@ export interface Character {
   theme: string; // Tailwind gradient classes
   color: string; // Tailwind text color class
   description: string;
+  speechStyle: string; // E.g., "respectful, proud, emotionally restrained"
   timeline: TimelineEvent[];
   relationships: Relationship[];
+  consciousnessStates: ConsciousnessState[];
   quote: CharacterQuote;
   personalityTraits: string[];
   strengths: string[];
