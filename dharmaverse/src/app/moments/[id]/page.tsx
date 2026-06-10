@@ -65,15 +65,15 @@ export default function SingleMoment() {
 
       <div className="max-w-[1400px] mx-auto px-4 md:px-16 lg:px-24 -mt-20 relative z-20">
         
-        {/* Play Documentary Button (Visual hook) */}
+        {/* Play Documentary Button & Enter Simulation */}
         <div className="mb-24 flex items-center gap-6">
-          <button className="w-24 h-24 rounded-full bg-white flex items-center justify-center text-black hover:scale-105 hover:bg-primary transition-all">
-            <PlayCircle className="w-12 h-12 ml-2" />
+          <Link href={`/experience/${moment.id}`} className="group relative bg-primary/10 border border-primary/30 text-primary px-8 py-4 rounded-full font-bold uppercase tracking-widest hover:bg-primary hover:text-black transition-all shadow-[0_0_30px_rgba(212,175,55,0.2)] overflow-hidden flex items-center gap-3">
+            <Activity className="w-5 h-5 animate-pulse" /> Enter Simulation
+            <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000"></div>
+          </Link>
+          <button className="p-4 rounded-full bg-white/5 border border-white/10 text-white hover:bg-white/10 hover:scale-105 transition-all backdrop-blur-md">
+            <PlayCircle className="w-6 h-6" />
           </button>
-          <div>
-            <h3 className="text-2xl font-bold uppercase tracking-widest text-white">Play Episode</h3>
-            <p className="text-muted text-sm uppercase tracking-widest">Duration: 45 Mins</p>
-          </div>
         </div>
 
         {/* Characters Involved */}
@@ -142,7 +142,7 @@ export default function SingleMoment() {
             </p>
             <button onClick={() => setIsWalkOpen(true)} className="group/btn relative bg-primary/10 border border-primary/30 text-primary px-8 py-4 rounded-full font-bold uppercase tracking-widest hover:bg-primary hover:text-black transition-all shadow-[0_0_30px_rgba(212,175,55,0.2)] overflow-hidden w-full text-center">
               <span className="flex items-center justify-center gap-3 relative z-10">
-                <Activity className="w-4 h-4 animate-pulse" /> Launch Perspective Engine
+                <Eye className="w-4 h-4 animate-pulse" /> Launch Perspective Engine
               </span>
             </button>
           </div>
