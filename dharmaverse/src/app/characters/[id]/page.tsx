@@ -5,8 +5,10 @@ import Image from "next/image";
 import Link from "next/link";
 import { useParams } from "next/navigation";
 import { characters, moments } from "@/data/lore";
-import { Play, Square, ArrowRight, Lock, Sparkles } from "lucide-react";
+import { Play, Square, ArrowRight, Lock, Sparkles, Activity } from "lucide-react";
 import { useState, useEffect } from "react";
+import AwakenModal from "@/components/AwakenModal";
+import OracleModal from "@/components/OracleModal";
 
 export default function CharacterUniverse() {
   const params = useParams();
@@ -18,6 +20,9 @@ export default function CharacterUniverse() {
 
   // Voice Player State
   const [isPlaying, setIsPlaying] = useState(false);
+  const [isAwakenOpen, setIsAwakenOpen] = useState(false);
+  
+  const [oracleTargetId, setOracleTargetId] = useState<string | null>(null);
 
   useEffect(() => {
     return () => window.speechSynthesis.cancel();
@@ -126,12 +131,13 @@ export default function CharacterUniverse() {
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {character.relationships.map((rel, i) => (
-              <Link key={i} href={`/characters/${rel.id}`} className="block">
-                <div className="p-8 rounded-xl bg-white/5 border border-white/10 hover:bg-white/10 hover:border-primary/50 transition-all backdrop-blur-sm cursor-pointer group">
-                  <h3 className="text-2xl font-bold text-white uppercase tracking-wider mb-2 group-hover:text-primary transition-colors">{rel.name}</h3>
-                  <p className="text-muted tracking-widest uppercase text-sm">{rel.relation}</p>
+              <button key={i} onClick={() => setOracleTargetId(rel.id)} className="block text-left w-full">
+                <div className="p-8 rounded-xl bg-white/5 border border-white/10 hover:bg-white/10 hover:border-primary/50 transition-all backdrop-blur-sm cursor-pointer group relative overflow-hidden">
+                  <div className="absolute inset-0 bg-gradient-to-br from-primary/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                  <h3 className="text-2xl font-bold text-white uppercase tracking-wider mb-2 group-hover:text-primary transition-colors relative z-10">{rel.name}</h3>
+                  <p className="text-muted tracking-widest uppercase text-sm relative z-10">{rel.relation}</p>
                 </div>
-              </Link>
+              </button>
             ))}
           </div>
         </section>
@@ -197,10 +203,13 @@ export default function CharacterUniverse() {
               Speak directly to the {character.archetype.toLowerCase()}. Question their decisions, explore their regrets, and discover the epic through their consciousness.
             </p>
             
-            <button disabled className="group relative bg-white/5 border border-white/10 text-white/50 px-10 py-5 rounded-full font-bold uppercase tracking-widest cursor-not-allowed overflow-hidden">
-              <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000"></div>
+            <button 
+              onClick={() => setIsAwakenOpen(true)}
+              className="group relative bg-primary/10 border border-primary/30 text-primary px-10 py-5 rounded-full font-bold uppercase tracking-widest hover:bg-primary hover:text-black transition-all shadow-[0_0_30px_rgba(212,175,55,0.2)] overflow-hidden"
+            >
+              <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000"></div>
               <span className="flex items-center gap-3 relative z-10">
-                <Lock className="w-5 h-5" /> Establishing Neural Link (Coming Soon)
+                <Activity className="w-5 h-5 animate-pulse" /> Establish Neural Link
               </span>
             </button>
           </div>
@@ -215,6 +224,19 @@ export default function CharacterUniverse() {
             </h2>
           </Link>
         </section>
+        
+        <AwakenModal 
+          character={character} 
+          isOpen={isAwakenOpen} 
+          onClose={() => setIsAwakenOpen(false)} 
+        />
+
+        <OracleModal
+          sourceCharacter={character}
+          targetCharacterId={oracleTargetId || ""}
+          isOpen={!!oracleTargetId}
+          onClose={() => setOracleTargetId(null)}
+        />
 
       </div>
     </div>

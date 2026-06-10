@@ -5,19 +5,28 @@ import Image from "next/image";
 import Link from "next/link";
 import { useParams } from "next/navigation";
 import { moments, characters } from "@/data/lore";
-import { ArrowRight, PlayCircle, Lock, FastForward, Eye } from "lucide-react";
+import { ArrowRight, PlayCircle, Lock, FastForward, Eye, Activity } from "lucide-react";
+import { useState } from "react";
+import WalkAnotherPathModal from "@/components/WalkAnotherPathModal";
 
 export default function SingleMoment() {
   const params = useParams();
   const id = params.id as string;
   const moment = moments.find(m => m.id === id);
   
-  if (!moment) return <div className="min-h-screen flex items-center justify-center text-white">Event Not Found</div>;
+  const [isWalkOpen, setIsWalkOpen] = useState(false);
+  
+  if (!moment) return <div className="min-h-screen bg-black text-white flex items-center justify-center">Event not found in the archives.</div>;
 
   const charactersInvolved = moment.characters.map(charId => characters.find(c => c.id === charId)).filter(Boolean);
 
   return (
     <div className="min-h-screen bg-[#080B12] overflow-x-hidden">
+      <WalkAnotherPathModal 
+        isOpen={isWalkOpen} 
+        onClose={() => setIsWalkOpen(false)} 
+        moment={moment} 
+      />
       
       {/* 1. Cinematic Hero */}
       <div className="relative w-full h-screen">
@@ -131,9 +140,9 @@ export default function SingleMoment() {
             <p className="text-lg text-muted font-light mb-12">
               Every action is justified by the one who takes it. Enter the Perspective Engine to view this event through the eyes of the heroes and villains involved.
             </p>
-            <button disabled className="group/btn relative bg-white/5 border border-white/10 text-white/50 px-8 py-4 rounded-full font-bold uppercase tracking-widest cursor-not-allowed overflow-hidden w-full text-center">
+            <button onClick={() => setIsWalkOpen(true)} className="group/btn relative bg-primary/10 border border-primary/30 text-primary px-8 py-4 rounded-full font-bold uppercase tracking-widest hover:bg-primary hover:text-black transition-all shadow-[0_0_30px_rgba(212,175,55,0.2)] overflow-hidden w-full text-center">
               <span className="flex items-center justify-center gap-3 relative z-10">
-                <Lock className="w-4 h-4" /> Perspective Engine (Coming Soon)
+                <Activity className="w-4 h-4 animate-pulse" /> Launch Perspective Engine
               </span>
             </button>
           </div>
