@@ -4,7 +4,7 @@ import { useState, useRef, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Character, ConsciousnessState } from "@/data/types";
 import { X, Sparkles, MessageSquare, ShieldAlert, Cpu, Activity, Send } from "lucide-react";
-import { useChat } from "ai/react";
+import { useChat } from "@ai-sdk/react";
 
 interface AwakenModalProps {
   character: Character;

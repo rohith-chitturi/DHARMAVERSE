@@ -5,7 +5,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { EpicEvent } from "@/data/types";
 import { characters } from "@/data/lore";
 import { X, Eye, GitBranch, ArrowRight } from "lucide-react";
-import { useCompletion } from "ai/react";
+import { useCompletion } from "@ai-sdk/react";
 
 interface WalkAnotherPathModalProps {
   moment: EpicEvent;

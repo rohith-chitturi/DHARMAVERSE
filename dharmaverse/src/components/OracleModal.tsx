@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Character } from "@/data/types";
 import { X, Network, Activity } from "lucide-react";
-import { useCompletion } from "ai/react";
+import { useCompletion } from "@ai-sdk/react";
 
 interface OracleModalProps {
   sourceCharacter: Character;
