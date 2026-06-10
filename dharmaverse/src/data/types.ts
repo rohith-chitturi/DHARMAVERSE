@@ -16,6 +16,21 @@ export interface CharacterQuote {
   context: string;
 }
 
+export interface WorldMemory {
+  politicalState: string;
+  unresolvedConflicts: string[];
+}
+
+export interface EventConsciousness {
+  activeCharacters: string[]; // Character IDs present in the simulation
+  knownFacts: string[];       // Global truths of the moment
+  eventTensions: string[];    // E.g., "Karna vs Arjuna", "Shalya demoralizing Karna"
+  eventObjectives: { characterId: string; objective: string }[];
+  criticalDecisions: { decision: string; consequence: string; futureImpact: string }[];
+  eventEmotion: string;       // Dominant emotion (e.g., "Tragic Tension")
+  worldState: WorldMemory;
+}
+
 export interface ConsciousnessState {
   id: string; // e.g., "pre-revelation", "day-17"
   label: string; // e.g., "Before Kunti Revelation"
@@ -62,4 +77,5 @@ export interface EpicEvent {
   consequences: string[];
   location: string;
   locationId: string;
+  eventConsciousness?: EventConsciousness;
 }

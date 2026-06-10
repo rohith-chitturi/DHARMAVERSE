@@ -527,7 +527,33 @@ export const moments: EpicEvent[] = [
     causes: ["A lifetime of rivalry", "Kunti's secret separating the brothers"],
     consequences: ["Karna's chariot wheel sinks", "Arjuna strikes Karna down unarmed at Krishna's behest", "The Kaurava morale is completely broken"],
     location: "Kurukshetra Battlefield, Day 17",
-    locationId: "kurukshetra"
+    locationId: "kurukshetra",
+    eventConsciousness: {
+      activeCharacters: ["karna", "arjuna", "krishna"],
+      knownFacts: [
+        "Millions have already died; the battlefield is soaked in blood.",
+        "Karna is fighting with the burden of Parashurama's and the Brahmin's curses.",
+        "Arjuna has sworn to kill Karna or immolate himself."
+      ],
+      eventTensions: [
+        "Karna's chariot wheel is stuck in the mud.",
+        "Shalya (Karna's charioteer) is constantly demoralizing him.",
+        "Krishna is urging Arjuna to shoot while Karna is unarmed."
+      ],
+      eventObjectives: [
+        { characterId: "karna", objective: "Die with honor, fulfilling his loyalty to Duryodhana." },
+        { characterId: "arjuna", objective: "Kill Karna to avenge Abhimanyu and Draupadi." },
+        { characterId: "krishna", objective: "Ensure the victory of Dharma by eliminating its greatest threat, regardless of rules." }
+      ],
+      criticalDecisions: [
+        { decision: "Arjuna shoots the unarmed Karna", consequence: "Karna dies, Kaurava morale shatters.", futureImpact: "Pandavas secure victory, but carry the moral weight of breaking war rules." }
+      ],
+      eventEmotion: "Tragic Tension",
+      worldState: {
+        politicalState: "The Kuru army is on the verge of total collapse.",
+        unresolvedConflicts: ["Ashwatthama's vengeance", "Duryodhana's refusal to yield"]
+      }
+    }
   },
   {
     id: "bhishma-vow",
