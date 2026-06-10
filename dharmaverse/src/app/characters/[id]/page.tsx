@@ -5,7 +5,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useParams } from "next/navigation";
 import { characters, moments } from "@/data/lore";
-import { Play, Square, ArrowRight } from "lucide-react";
+import { Play, Square, ArrowRight, Lock, Sparkles } from "lucide-react";
 import { useState, useEffect } from "react";
 
 export default function CharacterUniverse() {
@@ -59,10 +59,13 @@ export default function CharacterUniverse() {
         
         <div className="absolute bottom-0 left-0 w-full p-8 md:p-16 lg:px-24 pb-24 z-10">
           <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8 }}>
+            <p className={`text-xl md:text-2xl tracking-[0.4em] uppercase font-bold mb-4 drop-shadow-md ${character.color}`}>
+              {character.archetype}
+            </p>
             <h1 className="text-6xl md:text-8xl lg:text-9xl font-black text-white uppercase tracking-widest drop-shadow-2xl">
               {character.name}
             </h1>
-            <p className={`text-2xl md:text-3xl tracking-[0.3em] uppercase font-bold mt-4 drop-shadow-md ${character.color}`}>
+            <p className={`text-lg md:text-xl tracking-[0.3em] uppercase mt-4 text-white/70`}>
               {character.title}
             </p>
           </motion.div>
@@ -74,9 +77,24 @@ export default function CharacterUniverse() {
         {/* 2. Who Was [Name]? */}
         <section className="py-24">
           <h2 className="text-sm tracking-[0.4em] uppercase text-white/50 mb-4">Origins & Identity</h2>
-          <p className="text-3xl md:text-5xl font-light text-white leading-relaxed tracking-wide">
+          <p className="text-3xl md:text-5xl font-light text-white leading-relaxed tracking-wide mb-12">
             {character.description}
           </p>
+          
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
+            <div>
+              <h3 className="text-sm tracking-[0.3em] uppercase text-white/50 mb-4">Core Strengths</h3>
+              <ul className="space-y-2">
+                {character.strengths.map((str, i) => <li key={i} className="text-lg text-white font-light border-l-2 border-primary pl-4">{str}</li>)}
+              </ul>
+            </div>
+            <div>
+              <h3 className="text-sm tracking-[0.3em] uppercase text-white/50 mb-4">Fatal Flaws</h3>
+              <ul className="space-y-2">
+                {character.weaknesses.map((wk, i) => <li key={i} className="text-lg text-white/70 font-light border-l-2 border-red-500/50 pl-4">{wk}</li>)}
+              </ul>
+            </div>
+          </div>
         </section>
 
         {/* 3. Life Timeline */}
@@ -108,10 +126,12 @@ export default function CharacterUniverse() {
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {character.relationships.map((rel, i) => (
-              <div key={i} className="p-8 rounded-xl bg-white/5 border border-white/10 hover:bg-white/10 transition-colors backdrop-blur-sm">
-                <h3 className="text-2xl font-bold text-white uppercase tracking-wider mb-2">{rel.name}</h3>
-                <p className="text-muted tracking-widest uppercase text-sm">{rel.relation}</p>
-              </div>
+              <Link key={i} href={`/characters/${rel.id}`} className="block">
+                <div className="p-8 rounded-xl bg-white/5 border border-white/10 hover:bg-white/10 hover:border-primary/50 transition-all backdrop-blur-sm cursor-pointer group">
+                  <h3 className="text-2xl font-bold text-white uppercase tracking-wider mb-2 group-hover:text-primary transition-colors">{rel.name}</h3>
+                  <p className="text-muted tracking-widest uppercase text-sm">{rel.relation}</p>
+                </div>
+              </Link>
             ))}
           </div>
         </section>
@@ -160,7 +180,33 @@ export default function CharacterUniverse() {
           </section>
         )}
 
-        {/* 7. Explore Next Character */}
+        {/* Future AI Placeholder */}
+        <section className="py-24 border-t border-white/10">
+          <div className="relative w-full rounded-3xl overflow-hidden border border-white/5 bg-[#0A0D14] p-12 md:p-20 flex flex-col items-center text-center">
+            <div className={`absolute inset-0 bg-gradient-to-t ${character.theme} opacity-10 blur-2xl pointer-events-none`}></div>
+            
+            <div className="mb-8 w-20 h-20 rounded-full bg-white/5 border border-white/10 flex items-center justify-center relative">
+              <div className="absolute inset-0 border border-primary/50 rounded-full animate-ping opacity-20"></div>
+              <Sparkles className="w-8 h-8 text-primary" />
+            </div>
+
+            <h2 className="text-4xl md:text-6xl font-serif text-white uppercase tracking-widest mb-6">
+              Awaken <span className="text-gradient-gold">{character.name}</span>
+            </h2>
+            <p className="text-xl text-muted font-light max-w-2xl mx-auto mb-12">
+              Speak directly to the {character.archetype.toLowerCase()}. Question their decisions, explore their regrets, and discover the epic through their consciousness.
+            </p>
+            
+            <button disabled className="group relative bg-white/5 border border-white/10 text-white/50 px-10 py-5 rounded-full font-bold uppercase tracking-widest cursor-not-allowed overflow-hidden">
+              <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000"></div>
+              <span className="flex items-center gap-3 relative z-10">
+                <Lock className="w-5 h-5" /> Establishing Neural Link (Coming Soon)
+              </span>
+            </button>
+          </div>
+        </section>
+
+        {/* Explore Next Character */}
         <section className="py-32 text-center border-t border-white/10">
           <p className="text-sm tracking-[0.4em] uppercase text-white/50 mb-8">Continue The Journey</p>
           <Link href={`/characters/${nextCharacter.id}`}>

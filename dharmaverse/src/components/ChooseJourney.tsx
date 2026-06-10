@@ -12,7 +12,7 @@ const journeys = [
     icon: <Sword className="w-8 h-8 text-primary" />,
     description: "Discover your epic counterpart through AI personality match.",
     image: "/assets/karna_hero.png",
-    href: "/characters"
+    href: "/find-my-character"
   },
   {
     id: 2,

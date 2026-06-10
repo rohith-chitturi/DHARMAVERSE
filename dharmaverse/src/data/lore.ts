@@ -1,23 +1,30 @@
-export const characters = [
+import { Character, EpicEvent } from "./types";
+
+export const characters: Character[] = [
   {
     id: "krishna",
+    slug: "krishna",
     name: "Krishna",
     title: "The Divine Strategist",
+    archetype: "Strategic Visionary",
     image: "/assets/krishna_hero.png",
     objectPosition: "object-[center_20%]",
     theme: "from-blue-900/60 to-purple-900/60",
     color: "text-blue-400",
     description: "The eighth avatar of Vishnu and the supreme orchestrator of the Mahabharata. He drives Arjuna's chariot and delivers the ultimate truth of the Bhagavad Gita.",
+    personalityTraits: ["Omniscient", "Charming", "Pragmatic", "Detached"],
+    strengths: ["Divine Wisdom", "Strategic Mastermind", "Diplomacy"],
+    weaknesses: ["Misunderstood by mortals", "Bound by his own rules of incarnation"],
     timeline: [
-      { year: "Pre-War", event: "The Peace Mission to Hastinapur" },
-      { year: "Day 1", event: "Delivers the Bhagavad Gita" },
-      { year: "Day 9", event: "Lifts the chariot wheel against Bhishma" },
-      { year: "Post-War", event: "The Curse of Gandhari" }
+      { year: "Pre-War", order: 10, event: "The Peace Mission to Hastinapur" },
+      { year: "Day 1", order: 20, event: "Delivers the Bhagavad Gita" },
+      { year: "Day 9", order: 30, event: "Lifts the chariot wheel against Bhishma" },
+      { year: "Post-War", order: 40, event: "Accepts the Curse of Gandhari" }
     ],
     relationships: [
-      { name: "Arjuna", relation: "Friend & Disciple" },
-      { name: "Draupadi", relation: "Devotee & Friend" },
-      { name: "Karna", relation: "Respected Adversary" }
+      { id: "arjuna", name: "Arjuna", relation: "Friend & Disciple", strength: 100 },
+      { id: "draupadi", name: "Draupadi", relation: "Devotee & Friend", strength: 95 },
+      { id: "karna", name: "Karna", relation: "Respected Adversary", strength: 80 }
     ],
     quote: {
       text: "I am Time, the destroyer of all worlds.",
@@ -26,23 +33,28 @@ export const characters = [
   },
   {
     id: "karna",
+    slug: "karna",
     name: "Karna",
     title: "The Tragic Hero",
+    archetype: "Tragic Hero",
     image: "/assets/karna_hero.png",
     objectPosition: "object-[center_20%]",
     theme: "from-amber-900/60 to-orange-900/60",
     color: "text-amber-500",
     description: "The eldest Pandava, born to the Sun God, yet raised by a charioteer. His life is defined by unwavering loyalty to Duryodhana and a tragic quest for validation.",
+    personalityTraits: ["Loyal", "Generous", "Insecure", "Proud"],
+    strengths: ["Peerless Archery", "Unwavering Charity", "Indomitable Will"],
+    weaknesses: ["Desire for validation", "Blind loyalty to Duryodhana", "Cursed by mentors"],
     timeline: [
-      { year: "Youth", event: "Rejected by Drona, accepted by Parashurama" },
-      { year: "Tournament", event: "Challenges Arjuna, crowned King of Anga" },
-      { year: "Day 16", event: "Becomes Commander of Kaurava Army" },
-      { year: "Day 17", event: "The Final Stand against Arjuna" }
+      { year: "Youth", order: 1, event: "Rejected by Drona, accepted by Parashurama" },
+      { year: "Tournament", order: 5, event: "Challenges Arjuna, crowned King of Anga" },
+      { year: "Day 16", order: 25, event: "Becomes Commander of Kaurava Army" },
+      { year: "Day 17", order: 26, event: "The Final Stand against Arjuna" }
     ],
     relationships: [
-      { name: "Duryodhana", relation: "Loyal Friend" },
-      { name: "Arjuna", relation: "Arch-Rival" },
-      { name: "Kunti", relation: "Mother (Secret)" }
+      { id: "duryodhana", name: "Duryodhana", relation: "Loyal Friend", strength: 100 },
+      { id: "arjuna", name: "Arjuna", relation: "Arch-Rival", strength: 90 },
+      { id: "kunti", name: "Kunti", relation: "Mother (Secret)", strength: 70 }
     ],
     quote: {
       text: "Loyalty is my greatest strength, and my greatest weakness.",
@@ -51,23 +63,28 @@ export const characters = [
   },
   {
     id: "arjuna",
+    slug: "arjuna",
     name: "Arjuna",
     title: "The Peerless Archer",
+    archetype: "Duty-Bound Warrior",
     image: "/assets/arjuna_hero.png",
     objectPosition: "object-[center_20%]",
     theme: "from-indigo-900/60 to-slate-900/60",
     color: "text-indigo-400",
     description: "The greatest warrior of his generation, caught between his duty as a Kshatriya and his love for his family.",
+    personalityTraits: ["Focused", "Compassionate", "Conflicted", "Honorable"],
+    strengths: ["Supreme Focus", "Divine Weapons", "Humility to learn"],
+    weaknesses: ["Emotional attachment", "Hesitation in the face of moral ambiguity"],
     timeline: [
-      { year: "Youth", event: "Wins Draupadi's hand in Swayamvara" },
-      { year: "Exile", event: "Obtains the Pashupatastra from Shiva" },
-      { year: "Day 14", event: "Avenge Abhimanyu's death" },
-      { year: "Day 17", event: "Defeats Karna" }
+      { year: "Youth", order: 6, event: "Wins Draupadi's hand in Swayamvara" },
+      { year: "Exile", order: 15, event: "Obtains the Pashupatastra from Shiva" },
+      { year: "Day 14", order: 24, event: "Avenge Abhimanyu's death" },
+      { year: "Day 17", order: 26, event: "Defeats Karna" }
     ],
     relationships: [
-      { name: "Krishna", relation: "Guide & Charioteer" },
-      { name: "Draupadi", relation: "Wife" },
-      { name: "Drona", relation: "Guru" }
+      { id: "krishna", name: "Krishna", relation: "Guide & Charioteer", strength: 100 },
+      { id: "draupadi", name: "Draupadi", relation: "Wife", strength: 95 },
+      { id: "drona", name: "Drona", relation: "Guru", strength: 85 }
     ],
     quote: {
       text: "My mind is reeling. I see no good in killing my own kinsmen.",
@@ -76,23 +93,28 @@ export const characters = [
   },
   {
     id: "draupadi",
+    slug: "draupadi",
     name: "Draupadi",
     title: "The Fire-Born Empress",
+    archetype: "Fierce Catalyst",
     image: "/assets/draupadi_hero.png",
     objectPosition: "object-[center_20%]",
     theme: "from-red-900/60 to-orange-900/60",
     color: "text-red-500",
     description: "Born from the sacrificial fire, she is the fierce and unyielding queen of the Pandavas, whose humiliation sparked the greatest war.",
+    personalityTraits: ["Fierce", "Unforgiving", "Intelligent", "Devout"],
+    strengths: ["Unbreakable Resolve", "Divine Protection", "Political Acumen"],
+    weaknesses: ["Consuming wrath", "Vulnerability as a pawn of statecraft"],
     timeline: [
-      { year: "Birth", event: "Emerged from the holy fire" },
-      { year: "Swayamvara", event: "Marries the Pandavas" },
-      { year: "The Dice Game", event: "The humiliation in the Kuru Sabha" },
-      { year: "War's End", event: "Vengeance fulfilled by Bheema" }
+      { year: "Birth", order: 2, event: "Emerged from the holy fire" },
+      { year: "Swayamvara", order: 6, event: "Marries the Pandavas" },
+      { year: "The Dice Game", order: 12, event: "The humiliation in the Kuru Sabha" },
+      { year: "War's End", order: 30, event: "Vengeance fulfilled by Bheema" }
     ],
     relationships: [
-      { name: "Pandavas", relation: "Husbands" },
-      { name: "Krishna", relation: "Divine Protector" },
-      { name: "Dushasana", relation: "Sworn Enemy" }
+      { id: "arjuna", name: "Arjuna", relation: "Husband", strength: 90 },
+      { id: "krishna", name: "Krishna", relation: "Divine Protector", strength: 100 },
+      { id: "duryodhana", name: "Duryodhana", relation: "Sworn Enemy", strength: 100 }
     ],
     quote: {
       text: "Where was Dharma when I was dragged into this hall?",
@@ -101,84 +123,307 @@ export const characters = [
   },
   {
     id: "bhishma",
+    slug: "bhishma",
     name: "Bhishma",
     title: "The Bound Patriarch",
+    archetype: "Bound Patriarch",
     image: "/assets/bhishma_hero.png",
     objectPosition: "object-bottom",
     theme: "from-slate-800/60 to-gray-900/60",
     color: "text-gray-300",
     description: "The grand-uncle of the Pandavas and Kauravas. A man of unbreakable vows, trapped by his own promises into fighting for the side he knew was wrong.",
+    personalityTraits: ["Dutiful", "Stoic", "Self-Sacrificing", "Tragic"],
+    strengths: ["Invincibility in battle", "Unwavering commitment to vows", "Immense wisdom"],
+    weaknesses: ["Bound by technicalities of duty over morality", "Unable to stop the Kauravas' sins"],
     timeline: [
-      { year: "Youth", event: "Takes the terrible vow of celibacy" },
-      { year: "Pre-War", event: "Attempts to broker peace" },
-      { year: "Days 1-10", event: "Supreme Commander of Kauravas" },
-      { year: "Day 10", event: "Falls on the bed of arrows" }
+      { year: "Youth", order: 0, event: "Takes the terrible vow of celibacy" },
+      { year: "Pre-War", order: 18, event: "Attempts to broker peace" },
+      { year: "Days 1-10", order: 21, event: "Supreme Commander of Kauravas" },
+      { year: "Day 10", order: 22, event: "Falls on the bed of arrows" }
     ],
     relationships: [
-      { name: "Kauravas & Pandavas", relation: "Grand-Nephews" },
-      { name: "Amba", relation: "Karmic Retribution (Shikhandi)" }
+      { id: "duryodhana", name: "Duryodhana", relation: "Grand-Nephew", strength: 70 },
+      { id: "arjuna", name: "Arjuna", relation: "Grand-Nephew", strength: 85 },
+      { id: "krishna", name: "Krishna", relation: "Divine Admirer", strength: 95 }
     ],
     quote: {
       text: "I am bound by my vow. Even if it costs me my soul.",
       context: "The paradox of duty"
     }
+  },
+  {
+    id: "vidura",
+    slug: "vidura",
+    name: "Vidura",
+    title: "The Moral Compass",
+    archetype: "Moral Advisor",
+    image: "/assets/krishna_hero.png", 
+    objectPosition: "object-top",
+    theme: "from-emerald-900/60 to-teal-900/60",
+    color: "text-emerald-400",
+    description: "The prime minister of the Kuru kingdom and the incarnation of Dharma. He constantly spoke the bitter truth to Dhritarashtra, though his advice was rarely heeded.",
+    personalityTraits: ["Wise", "Fearless", "Righteous", "Observant"],
+    strengths: ["Absolute clarity of Dharma", "Political foresight", "Incorruptible"],
+    weaknesses: ["Lack of martial power", "Bound to a blind king"],
+    timeline: [
+      { year: "Youth", order: 3, event: "Appointed Prime Minister" },
+      { year: "The Dice Game", order: 12, event: "Warns against the game's consequences" },
+      { year: "Pre-War", order: 19, event: "Resigns his post in protest" },
+      { year: "Post-War", order: 35, event: "Retires to the forest" }
+    ],
+    relationships: [
+      { id: "krishna", name: "Krishna", relation: "Spiritual Ally", strength: 90 },
+      { id: "duryodhana", name: "Duryodhana", relation: "Political Adversary", strength: 80 }
+    ],
+    quote: {
+      text: "A king who cannot control his sons has no right to control a kingdom.",
+      context: "Advising Dhritarashtra before the war"
+    }
+  },
+  {
+    id: "duryodhana",
+    slug: "duryodhana",
+    name: "Duryodhana",
+    title: "The Ambitious Prince",
+    archetype: "Ambitious Antagonist",
+    image: "/assets/karna_hero.png", 
+    objectPosition: "object-[center_20%]",
+    theme: "from-red-900/60 to-purple-900/60",
+    color: "text-red-600",
+    description: "The eldest Kaurava. Driven by an intense inferiority complex and an unyielding desire for power, he refused to share even a needle's worth of land with the Pandavas.",
+    personalityTraits: ["Stubborn", "Generous to friends", "Insecure", "Vengeful"],
+    strengths: ["Exceptional mace fighter", "Inspires immense loyalty (Karna)", "Political administration"],
+    weaknesses: ["Blinding envy", "Inability to see the larger picture", "Ego"],
+    timeline: [
+      { year: "Youth", order: 4, event: "Attempts to poison Bheema" },
+      { year: "The Dice Game", order: 12, event: "Strips the Pandavas of their kingdom" },
+      { year: "Pre-War", order: 18, event: "Rejects Krishna's peace offering" },
+      { year: "Day 18", order: 29, event: "Defeated by Bheema in mace combat" }
+    ],
+    relationships: [
+      { id: "karna", name: "Karna", relation: "Closest Friend", strength: 100 },
+      { id: "bhishma", name: "Bhishma", relation: "Grandfather", strength: 60 },
+      { id: "arjuna", name: "Arjuna", relation: "Hated Cousin", strength: 100 }
+    ],
+    quote: {
+      text: "I will not give them land enough to cover the point of a needle.",
+      context: "The final rejection of peace"
+    }
+  },
+  {
+    id: "kunti",
+    slug: "kunti",
+    name: "Kunti",
+    title: "The Stoic Matriarch",
+    archetype: "Stoic Matriarch",
+    image: "/assets/draupadi_hero.png", 
+    objectPosition: "object-[center_20%]",
+    theme: "from-amber-700/60 to-yellow-900/60",
+    color: "text-amber-300",
+    description: "Mother of the Pandavas and Karna. She endured a lifetime of hardship, exile, and the heavy burden of a secret that tore her family apart.",
+    personalityTraits: ["Resilient", "Protective", "Secretive", "Pious"],
+    strengths: ["Endurance through suffering", "Political survival", "Devotion"],
+    weaknesses: ["Fear of societal judgment", "The burden of her secret firstborn"],
+    timeline: [
+      { year: "Youth", order: 0, event: "Grants birth to Karna, abandons him" },
+      { year: "Marriage", order: 3, event: "Invokes gods to bear the Pandavas" },
+      { year: "Pre-War", order: 17, event: "Reveals the truth to Karna" },
+      { year: "Post-War", order: 40, event: "Retires to the forest and perishes in a fire" }
+    ],
+    relationships: [
+      { id: "arjuna", name: "Arjuna", relation: "Son", strength: 95 },
+      { id: "karna", name: "Karna", relation: "Secret Firstborn", strength: 80 }
+    ],
+    quote: {
+      text: "I do not weep for the war. I weep for the brother who fights against you.",
+      context: "Speaking to the Pandavas about Karna"
+    }
+  },
+  {
+    id: "drona",
+    slug: "drona",
+    name: "Drona",
+    title: "The Compromised Mentor",
+    archetype: "Compromised Mentor",
+    image: "/assets/bhishma_hero.png", 
+    objectPosition: "object-top",
+    theme: "from-slate-700/60 to-indigo-900/60",
+    color: "text-slate-400",
+    description: "The royal preceptor of the Kuru princes. A master of advanced weaponry whose overwhelming love for his son and desire for revenge clouded his dharma.",
+    personalityTraits: ["Masterful", "Vengeful", "Biased", "Proud"],
+    strengths: ["Unparalleled knowledge of weapons", "Tactical genius (Chakravyuha)"],
+    weaknesses: ["Blind love for Ashwatthama", "Grudge against Drupada", "Favoritism toward Arjuna"],
+    timeline: [
+      { year: "Youth", order: 2, event: "Insulted by King Drupada" },
+      { year: "Training", order: 8, event: "Demands Ekalavya's thumb" },
+      { year: "Days 11-15", order: 23, event: "Commander of the Kaurava army" },
+      { year: "Day 15", order: 24, event: "Lays down arms upon hearing of his son's 'death'" }
+    ],
+    relationships: [
+      { id: "arjuna", name: "Arjuna", relation: "Favorite Student", strength: 90 },
+      { id: "ashwatthama", name: "Ashwatthama", relation: "Beloved Son", strength: 100 }
+    ],
+    quote: {
+      text: "I have taught you everything I know, Arjuna. Except how to defeat me.",
+      context: "Before the Kurukshetra war"
+    }
+  },
+  {
+    id: "ashwatthama",
+    slug: "ashwatthama",
+    name: "Ashwatthama",
+    title: "The Vengeful Survivor",
+    archetype: "Tragic Hero", 
+    image: "/assets/arjuna_hero.png", 
+    objectPosition: "object-[center_20%]",
+    theme: "from-green-900/60 to-black",
+    color: "text-green-500",
+    description: "The immortal son of Drona. Driven mad by grief over his father's deceitful death, he committed the most heinous war crime of the epic.",
+    personalityTraits: ["Fierce", "Impulsive", "Grief-Stricken", "Ruthless"],
+    strengths: ["Possesses the Brahmashirsha Astra", "Chiranjeevi (Immortal)"],
+    weaknesses: ["Uncontrollable rage", "Lack of foresight", "Gullible"],
+    timeline: [
+      { year: "Youth", order: 4, event: "Grows up in poverty, later elevated by Drona" },
+      { year: "Day 15", order: 24, event: "Learns of his father's death by deceit" },
+      { year: "Night 18", order: 29, event: "Slaughters the sleeping Pandava camp" },
+      { year: "Post-War", order: 30, event: "Cursed by Krishna to wander the earth forever" }
+    ],
+    relationships: [
+      { id: "drona", name: "Drona", relation: "Father", strength: 100 },
+      { id: "duryodhana", name: "Duryodhana", relation: "Friend & Commander", strength: 80 },
+      { id: "krishna", name: "Krishna", relation: "Cursed by Him", strength: 90 }
+    ],
+    quote: {
+      text: "They killed my father by deceit. I will kill them all in their sleep.",
+      context: "The massacre at the Pandava camp"
+    }
   }
 ];
 
-export const moments = [
+export const moments: EpicEvent[] = [
   {
     id: "dice-game",
+    slug: "dice-game",
     title: "The Dice Game",
     description: "The fateful roll that altered destiny forever. A kingdom lost, a queen humiliated, and a vengeance sworn.",
+    category: "Betrayal",
+    emotions: ["humiliation", "anger", "betrayal", "injustice"],
+    timelineOrder: 10,
     image: "/assets/dice_game.png",
     objectPosition: "object-[center_20%]",
-    characters: ["yudhishthira", "shakuni", "draupadi", "duryodhana"],
-    theme: "from-emerald-900/60 to-black"
+    characters: ["krishna", "draupadi", "duryodhana", "vidura", "bhishma", "karna"],
+    theme: "from-emerald-900/60 to-black",
+    causes: ["Duryodhana's envy of Indraprastha", "Shakuni's manipulation"],
+    consequences: ["Pandavas exiled for 13 years", "Draupadi's vow to leave her hair unbound", "The inevitability of the Kurukshetra war"],
+    location: "The Kuru Sabha, Hastinapur",
+    locationId: "hastinapur"
   },
   {
     id: "draupadi-sabha",
+    slug: "draupadi-sabha",
     title: "The Grand Sabha",
     description: "A Queen's fury that burned an empire. The silence of the elders that damned the Kuru dynasty.",
+    category: "Sacrifice",
+    emotions: ["fury", "despair", "divine intervention", "shame"],
+    timelineOrder: 11,
     image: "/assets/draupadi_hero.png",
     objectPosition: "object-[center_20%]",
-    characters: ["draupadi", "krishna", "bhishma", "karna"],
-    theme: "from-red-900/60 to-black"
+    characters: ["draupadi", "krishna", "bhishma", "karna", "duryodhana"],
+    theme: "from-red-900/60 to-black",
+    causes: ["Yudhishthira wagering Draupadi in the Dice Game", "Karna's provocation"],
+    consequences: ["Krishna's divine intervention (Akshaya Patra)", "Bheema's vow to drink Dushasana's blood"],
+    location: "The Kuru Sabha, Hastinapur",
+    locationId: "hastinapur"
+  },
+  {
+    id: "peace-mission",
+    slug: "peace-mission",
+    title: "Krishna's Peace Mission",
+    description: "The final attempt to avert annihilation. Krishna offers peace for five villages, but Duryodhana refuses to yield a needle's worth of land.",
+    category: "Politics",
+    emotions: ["tension", "arrogance", "divine awe", "inevitability"],
+    timelineOrder: 20,
+    image: "/assets/krishna_hero.png",
+    objectPosition: "object-[center_20%]",
+    characters: ["krishna", "duryodhana", "bhishma", "vidura", "karna"],
+    theme: "from-blue-900/60 to-black",
+    causes: ["The end of the Pandavas' 13-year exile", "Dharma's requirement to seek peace before war"],
+    consequences: ["Duryodhana attempts to arrest Krishna", "Krishna reveals his cosmic form (Vishvarupa)", "War is officially declared"],
+    location: "Hastinapur Royal Court",
+    locationId: "hastinapur"
+  },
+  {
+    id: "abhimanyu",
+    slug: "abhimanyu",
+    title: "The Fall of Abhimanyu",
+    description: "A lone youth against veterans. Trapped in the Chakravyuha, Abhimanyu fights with the ferocity of a god before being brutally struck down.",
+    category: "War",
+    emotions: ["courage", "sacrifice", "loss", "grief", "rage"],
+    timelineOrder: 25,
+    image: "/assets/arjuna_hero.png", 
+    objectPosition: "object-[center_20%]",
+    characters: ["arjuna", "drona", "karna", "duryodhana"],
+    theme: "from-red-800/60 to-black",
+    causes: ["Arjuna drawn away from the main battlefield", "Drona forms the inescapable Chakravyuha"],
+    consequences: ["Arjuna takes a terrifying vow to kill Jayadratha by sunset", "The rules of righteous war are completely broken"],
+    location: "Kurukshetra Battlefield, Day 13",
+    locationId: "kurukshetra"
   },
   {
     id: "karna-vs-arjuna",
+    slug: "karna-vs-arjuna",
     title: "Karna vs Arjuna",
-    description: "The ultimate clash of dharma and destiny. Two brothers separated by fate, united by war.",
+    description: "The ultimate clash of dharma and destiny. Two brothers separated by fate, united by war, fighting for the survival of their respective sides.",
+    category: "War",
+    emotions: ["rivalry", "tragedy", "respect", "destiny"],
+    timelineOrder: 28,
     image: "/assets/arjuna_hero.png",
     objectPosition: "object-[center_20%]",
-    characters: ["karna", "arjuna", "krishna", "shalya"],
-    theme: "from-amber-900/60 to-indigo-900/60"
+    characters: ["karna", "arjuna", "krishna"],
+    theme: "from-amber-900/60 to-indigo-900/60",
+    causes: ["A lifetime of rivalry", "Kunti's secret separating the brothers"],
+    consequences: ["Karna's chariot wheel sinks", "Arjuna strikes Karna down unarmed at Krishna's behest", "The Kaurava morale is completely broken"],
+    location: "Kurukshetra Battlefield, Day 17",
+    locationId: "kurukshetra"
   },
   {
     id: "bhishma-vow",
+    slug: "bhishma-vow",
     title: "The Bed of Arrows",
-    description: "The sacrifice that bound the universe. The fall of the patriarch who lived too long.",
+    description: "The sacrifice that bound the universe. The fall of the patriarch who lived too long, brought down by Arjuna using Shikhandi as a shield.",
+    category: "Sacrifice",
+    emotions: ["sorrow", "relief", "duty", "reverence"],
+    timelineOrder: 23,
     image: "/assets/bhishma_hero.png",
     objectPosition: "object-bottom",
-    characters: ["bhishma", "arjuna", "shikhandi"],
-    theme: "from-slate-900/60 to-black"
+    characters: ["bhishma", "arjuna", "krishna"],
+    theme: "from-slate-900/60 to-black",
+    causes: ["Bhishma's oath to not fight a woman or one born a woman (Shikhandi)", "The Pandavas' inability to win while Bhishma commanded"],
+    consequences: ["Bhishma steps down as commander", "He rests on a bed of arrows until the sun moves north", "Drona takes command"],
+    location: "Kurukshetra Battlefield, Day 10",
+    locationId: "kurukshetra"
   }
 ];
 
 export const discoverCategories = [
   {
     title: "Trending Characters",
-    items: [characters[1], characters[3], characters[0]]
+    items: characters.slice(0, 4)
   },
   {
     title: "Most Tragic Heroes",
-    items: [characters[1], characters[4]]
+    items: characters.filter(c => c.archetype === "Tragic Hero")
   },
   {
     title: "Greatest Battles",
-    items: [moments[2], moments[3]]
+    items: moments.filter(m => m.category === "War")
   },
   {
-    title: "Turning Points",
-    items: [moments[0], moments[1]]
+    title: "Political Intrigue",
+    items: moments.filter(m => m.category === "Politics" || m.category === "Betrayal")
+  },
+  {
+    title: "Stories of Sacrifice",
+    items: moments.filter(m => m.emotions.includes("sacrifice"))
   }
 ];
