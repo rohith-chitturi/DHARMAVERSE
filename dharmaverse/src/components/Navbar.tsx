@@ -13,6 +13,7 @@ const navLinks = [
   { name: "Moments", href: "/moments" },
   { name: "Perspectives", href: "/perspectives" },
   { name: "Universe", href: "/universe" },
+  { name: "Dharma Mirror", href: "/dharma-mirror" },
   { name: "Epic Journey", href: "/epic" },
   { name: "About", href: "/about" },
 ];
