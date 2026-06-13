@@ -19,8 +19,15 @@ export interface CharacterQuote {
 export type DharmaVector = "Loyalty" | "Justice" | "Duty" | "Compassion" | "Ambition" | "Wisdom" | "Sacrifice" | "Resilience";
 export type HiddenMetric = "Idealism" | "Pragmatism" | "Forgiveness" | "Vengeance" | "Individualism" | "Collectivism";
 
+export interface TranslationRecord {
+  en: string;
+  hi?: string;
+  te?: string;
+  [key: string]: string | undefined;
+}
+
 export interface DharmaDecisionOption {
-  text: string;
+  text: TranslationRecord;
   impact: Partial<Record<DharmaVector, number>>; 
   hiddenImpact: Partial<Record<HiddenMetric, number>>;
   epicConnection: string; 
@@ -28,7 +35,7 @@ export interface DharmaDecisionOption {
 
 export interface DharmaDecision {
   id: string;
-  scenario: string; 
+  scenario: TranslationRecord; 
   options: DharmaDecisionOption[];
 }
 

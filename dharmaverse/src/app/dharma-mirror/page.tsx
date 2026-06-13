@@ -7,6 +7,7 @@ import { ArrowLeft, Sparkles, Activity, ShieldAlert, Zap, Compass, TreeDeciduous
 import { dharmaScenarios } from "@/data/dharmaScenarios";
 import { DharmaDecisionOption, DharmaProfile, DharmaDecision } from "@/data/types";
 import { calculateDharmaProfile } from "@/utils/dharmaEngine";
+import { useSettings } from "@/context/SettingsContext";
 
 const SCENARIO_COUNT = 7;
 
@@ -17,6 +18,7 @@ export default function DharmaMirror() {
   const [isGenerating, setIsGenerating] = useState(false);
   const [profile, setProfile] = useState<DharmaProfile | null>(null);
   const [history, setHistory] = useState<DharmaProfile[]>([]);
+  const { t, settings } = useSettings();
 
   // Randomly select scenarios on mount
   const sessionScenarios = useMemo(() => {
@@ -70,7 +72,7 @@ export default function DharmaMirror() {
       
       <nav className="relative z-50 p-6">
         <Link href="/" className="flex items-center gap-2 text-white/40 hover:text-white transition-colors text-xs uppercase tracking-widest font-bold w-fit">
-          <ArrowLeft className="w-4 h-4" /> Leave Chamber
+          <ArrowLeft className="w-4 h-4" /> {t("mirror.leave")}
         </Link>
       </nav>
 
@@ -87,17 +89,16 @@ export default function DharmaMirror() {
             >
               <Sparkles className="w-12 h-12 text-primary/50 mx-auto mb-8 animate-pulse" />
               <h1 className="text-5xl md:text-7xl font-serif text-white uppercase tracking-widest mb-6 drop-shadow-[0_0_30px_rgba(212,175,55,0.3)]">
-                The Dharma Mirror
+                {t("mirror.title")}
               </h1>
               <p className="text-lg md:text-xl text-white/50 font-light leading-relaxed mb-12 tracking-wide">
-                Until now, you have explored the Epic. Now, the Epic will explore you. 
-                Step into the reflection chamber and discover what your choices reveal about your soul.
+                {t("mirror.subtitle")}
               </p>
               <button 
                 onClick={() => setHasStarted(true)}
                 className="group relative bg-primary/10 border border-primary/30 text-primary px-12 py-5 rounded-full font-bold uppercase tracking-widest hover:bg-primary hover:text-black transition-all shadow-[0_0_30px_rgba(212,175,55,0.2)] overflow-hidden"
               >
-                <span className="relative z-10">Gaze Into The Mirror</span>
+                <span className="relative z-10">{t("mirror.gaze")}</span>
                 <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000"></div>
               </button>
             </motion.div>
@@ -117,7 +118,7 @@ export default function DharmaMirror() {
                   Reflection {currentStep + 1} of {SCENARIO_COUNT}
                 </p>
                 <h2 className="text-2xl md:text-4xl font-serif text-white leading-relaxed tracking-wide">
-                  "{currentScenario.scenario}"
+                  "{currentScenario.scenario[settings.language] || currentScenario.scenario['en']}"
                 </h2>
               </div>
 
@@ -130,7 +131,7 @@ export default function DharmaMirror() {
                   >
                     <div className="absolute inset-0 bg-gradient-to-r from-primary/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700"></div>
                     <p className="text-lg md:text-xl text-white/80 font-light relative z-10 group-hover:text-white transition-colors duration-500">
-                      {opt.text}
+                      {opt.text[settings.language] || opt.text['en']}
                     </p>
                   </button>
                 ))}
