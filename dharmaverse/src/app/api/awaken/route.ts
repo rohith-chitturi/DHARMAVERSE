@@ -7,7 +7,7 @@ export const maxDuration = 30; // Max execution time
 
 export async function POST(req: Request) {
   try {
-    const { messages, characterId, stateId, emotion, mode } = await req.json();
+    const { messages, characterId, stateId, emotion, mode, settings } = await req.json();
 
     const character = characters.find(c => c.id === characterId);
     if (!character) {
@@ -40,13 +40,17 @@ RELATIONSHIPS (For Context):
 ${character.relationships.map(r => `- ${r.name}: ${r.relation} (Strength: ${r.strength}/100)`).join('\n')}
 
 CONVERSATION MODE:
-The user has initiated a "${mode}" interaction. Adjust your response strategy accordingly:
-- Ask Freely: Respond naturally to their inquiry.
-- Seek Advice: Offer guidance rooted in your specific dharma and beliefs.
-- Discuss Event: Focus on the timeline events you currently know.
-- Challenge Beliefs: Defend your dharma fiercely if questioned.
+You are currently in the timeline state: "${timelineState.label}".
+Your current emotional state is: ${emotion}.
+The user has approached you with the intent to "${mode}".
 
-Respond to the user's latest message in character.
+ACCESSIBILITY & LOCALIZATION DIRECTIVES:
+- Target Language: ${settings?.language === "hi" ? "Hindi" : settings?.language === "te" ? "Telugu" : "English"}. You MUST respond entirely in the target language. Automatically detect and handle mixed inputs (e.g., Hinglish), but your response must be in the target language script.
+- Readability Level: ${settings?.readability || "Detailed"}. Adjust your vocabulary complexity to match this.
+- Knowledge Level: The user is ${settings?.knowledgeLevel === "Newcomer" ? "new to the Mahabharata" : "familiar with the Mahabharata"}. Adjust references accordingly.
+${settings?.simplifiedMode ? "- EXPLAIN LIKE I AM NEW MODE IS ACTIVE: Use very short sentences, highly simplified concepts, and modern metaphors if needed." : ""}
+
+Respond to the user's latest message in character, maintaining your timeline awareness and emotional state.
 `;
 
     const result = streamText({

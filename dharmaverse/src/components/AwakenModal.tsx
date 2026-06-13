@@ -5,6 +5,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Character, ConsciousnessState } from "@/data/types";
 import { X, Sparkles, MessageSquare, ShieldAlert, Cpu, Activity, Send } from "lucide-react";
 import { useChat } from "@ai-sdk/react";
+import { useSettings } from "@/context/SettingsContext";
 
 interface AwakenModalProps {
   character: Character;
@@ -19,6 +20,7 @@ export default function AwakenModal({ character, isOpen, onClose }: AwakenModalP
   const [selectedState, setSelectedState] = useState<ConsciousnessState | null>(null);
   const [selectedEmotion, setSelectedEmotion] = useState<string>("");
   const [selectedMode, setSelectedMode] = useState<string>("");
+  const { settings } = useSettings();
 
   const defaultEmotions = ["Confident", "Angry", "Reflective", "Broken", "Stoic"];
   const modes = [
@@ -35,7 +37,8 @@ export default function AwakenModal({ character, isOpen, onClose }: AwakenModalP
       characterId: character.id,
       stateId: selectedState?.id,
       emotion: selectedEmotion,
-      mode: selectedMode
+      mode: selectedMode,
+      settings: settings
     }
   });
 
