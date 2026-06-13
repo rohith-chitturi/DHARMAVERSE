@@ -3,25 +3,29 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
-import { Menu, X } from "lucide-react";
+import { Menu, X, Settings2 } from "lucide-react";
 import { useState, useEffect } from "react";
+import { useSettings } from "@/context/SettingsContext";
+import SettingsModal from "@/components/SettingsModal";
 
-const navLinks = [
-  { name: "Home", href: "/" },
-  { name: "Discover", href: "/discover" },
-  { name: "Characters", href: "/characters" },
-  { name: "Moments", href: "/moments" },
-  { name: "Perspectives", href: "/perspectives" },
-  { name: "Universe", href: "/universe" },
-  { name: "Dharma Mirror", href: "/dharma-mirror" },
-  { name: "Epic Journey", href: "/epic" },
-  { name: "About", href: "/about" },
+const navLinksKeyMapping = [
+  { key: "nav.home", href: "/" },
+  { key: "nav.discover", href: "/discover" },
+  { key: "nav.characters", href: "/characters" },
+  { key: "nav.moments", href: "/moments" },
+  { key: "nav.perspectives", href: "/perspectives" },
+  { key: "nav.universe", href: "/universe" },
+  { key: "nav.dharmaMirror", href: "/dharma-mirror" },
+  { key: "nav.epicJourney", href: "/epic" },
+  { key: "nav.about", href: "/about" },
 ];
 
 export default function Navbar() {
   const pathname = usePathname();
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [settingsOpen, setSettingsOpen] = useState(false);
+  const { t } = useSettings();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -51,17 +55,17 @@ export default function Navbar() {
 
         {/* Desktop Links */}
         <div className="hidden lg:flex items-center gap-8">
-          {navLinks.map((link) => {
+          {navLinksKeyMapping.map((link) => {
             const isActive = pathname === link.href || (link.href !== "/" && pathname.startsWith(link.href));
             return (
               <Link
-                key={link.name}
+                key={link.key}
                 href={link.href}
                 className={`text-sm tracking-widest uppercase transition-colors duration-300 relative group ${
                   isActive ? "text-primary font-bold" : "text-muted hover:text-white"
                 }`}
               >
-                {link.name}
+                {t(link.key)}
                 {isActive && (
                   <motion.div 
                     layoutId="navbar-indicator"
@@ -72,6 +76,13 @@ export default function Navbar() {
               </Link>
             );
           })}
+          
+          <button 
+            onClick={() => setSettingsOpen(true)}
+            className="p-2 text-white/50 hover:text-white bg-white/5 rounded-full hover:bg-white/10 transition-colors ml-4"
+          >
+            <Settings2 className="w-5 h-5" />
+          </button>
         </div>
 
         {/* Mobile Menu Toggle */}
@@ -92,9 +103,9 @@ export default function Navbar() {
               transition={{ duration: 0.3 }}
               className="absolute top-0 left-0 right-0 h-screen bg-[#080B12]/95 backdrop-blur-xl z-40 flex flex-col items-center justify-center gap-8"
             >
-              {navLinks.map((link) => (
+              {navLinksKeyMapping.map((link) => (
                 <Link
-                  key={link.name}
+                  key={link.key}
                   href={link.href}
                   onClick={() => setMobileMenuOpen(false)}
                   className={`text-2xl font-bold tracking-widest uppercase transition-colors ${
@@ -103,14 +114,22 @@ export default function Navbar() {
                       : "text-white/70 hover:text-white"
                   }`}
                 >
-                  {link.name}
+                  {t(link.key)}
                 </Link>
               ))}
+              <button 
+                onClick={() => { setSettingsOpen(true); setMobileMenuOpen(false); }}
+                className="mt-8 px-8 py-3 rounded-full border border-primary text-primary tracking-widest uppercase font-bold"
+              >
+                <Settings2 className="w-5 h-5 inline-block mr-2 -mt-1" /> {t("settings.title")}
+              </button>
             </motion.div>
           )}
         </AnimatePresence>
 
       </div>
+      
+      <SettingsModal isOpen={settingsOpen} onClose={() => setSettingsOpen(false)} />
     </nav>
   );
 }
