@@ -16,6 +16,35 @@ export interface CharacterQuote {
   context: string;
 }
 
+export type DharmaVector = "Loyalty" | "Justice" | "Duty" | "Compassion" | "Ambition" | "Wisdom" | "Sacrifice" | "Resilience";
+export type HiddenMetric = "Idealism" | "Pragmatism" | "Forgiveness" | "Vengeance" | "Individualism" | "Collectivism";
+
+export interface DharmaDecisionOption {
+  text: string;
+  impact: Partial<Record<DharmaVector, number>>; 
+  hiddenImpact: Partial<Record<HiddenMetric, number>>;
+  epicConnection: string; 
+}
+
+export interface DharmaDecision {
+  id: string;
+  scenario: string; 
+  options: DharmaDecisionOption[];
+}
+
+export interface DharmaProfile {
+  id: string; // Unique ID for the session
+  timestamp: string; 
+  scores: Record<DharmaVector, number>;
+  hiddenScores: Record<HiddenMetric, number>;
+  primaryArchetype: string;
+  secondaryArchetype: string;
+  coreStrength: DharmaVector;
+  coreWeakness: DharmaVector;
+  characterResonance: { characterId: string; trait: string; description: string }[]; 
+  yourKurukshetra: string; 
+}
+
 export interface WorldMemory {
   politicalState: string;
   unresolvedConflicts: string[];
