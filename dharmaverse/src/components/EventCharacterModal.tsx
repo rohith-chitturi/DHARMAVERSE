@@ -5,18 +5,23 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Character, EventConsciousness } from "@/data/types";
 import { X, MessageSquare, Cpu, Activity, Send, Target } from "lucide-react";
 import { useChat } from "@ai-sdk/react";
+import { useSettings } from "@/context/SettingsContext";
+import { characters } from "@/data/characters";
 
 interface EventCharacterModalProps {
-  character: Character;
-  eventConsciousness: EventConsciousness;
+  characterId: string;
   momentTitle: string;
+  eventConsciousness: EventConsciousness;
   isOpen: boolean;
   onClose: () => void;
 }
 
-export default function EventCharacterModal({ character, eventConsciousness, momentTitle, isOpen, onClose }: EventCharacterModalProps) {
+export default function EventCharacterModal({ characterId, momentTitle, eventConsciousness, isOpen, onClose }: EventCharacterModalProps) {
   const [step, setStep] = useState<"MODE" | "INITIALIZING" | "CHAT">("MODE");
   const [selectedMode, setSelectedMode] = useState<string>("");
+  const { settings } = useSettings();
+  
+  const character = characters.find(c => c.id === characterId);
 
   const modes = [
     { id: "interrogate", label: "Interrogate Motives", desc: "Question their current objective" },
@@ -24,16 +29,17 @@ export default function EventCharacterModal({ character, eventConsciousness, mom
     { id: "challenge-dharma", label: "Challenge Dharma", desc: "Debate the righteousness of their actions" }
   ];
 
-  const objective = eventConsciousness.eventObjectives.find(o => o.characterId === character.id)?.objective || "Survive the event.";
+  const objective = eventConsciousness.eventObjectives.find(o => o.characterId === characterId)?.objective || "Survive the event.";
 
   // AI Chat hook
   const { messages, input, handleInputChange, handleSubmit, isLoading } = useChat({
     api: "/api/experience",
     body: {
-      characterId: character.id,
+      characterId,
       eventConsciousness,
       momentTitle,
-      mode: selectedMode
+      mode: selectedMode,
+      accessibility: settings
     }
   });
 
