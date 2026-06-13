@@ -7,7 +7,7 @@ export const maxDuration = 30;
 
 export async function POST(req: Request) {
   try {
-    const { messages, characterId, eventConsciousness, momentTitle, mode } = await req.json();
+    const { messages, characterId, eventConsciousness, momentTitle, mode, accessibility } = await req.json();
 
     const character = characters.find(c => c.id === characterId);
     if (!character) {
@@ -48,6 +48,12 @@ ${baseState.beliefs.map(b => `- ${b}`).join('\n')}
 CONVERSATION MODE:
 The user has approached you with the intent to "${mode}". 
 Keep your responses highly cinematic, intense, and grounded entirely in the active tensions and your current objective. Do not summarize the event; react to it as if it is happening right around you.
+
+ACCESSIBILITY & LOCALIZATION DIRECTIVES:
+- Target Language: ${accessibility?.language === "hi" ? "Hindi" : accessibility?.language === "te" ? "Telugu" : "English"}. You MUST respond entirely in the target language. Automatically detect and handle mixed inputs (e.g., Hinglish), but your response must be in the target language script.
+- Readability Level: ${accessibility?.readability || "Detailed"}. Adjust your vocabulary complexity to match this.
+- Knowledge Level: The user is ${accessibility?.knowledgeLevel === "Newcomer" ? "new to the Mahabharata" : "familiar with the Mahabharata"}. Adjust references accordingly.
+${accessibility?.simplifiedMode ? "- EXPLAIN LIKE I AM NEW MODE IS ACTIVE: Use very short sentences, highly simplified concepts, and modern metaphors if needed." : ""}
 
 Respond to the user's latest message in character.
 `;
