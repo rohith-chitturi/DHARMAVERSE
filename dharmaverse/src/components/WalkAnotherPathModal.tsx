@@ -57,15 +57,15 @@ export default function WalkAnotherPathModal({ moment, isOpen, onClose }: WalkAn
   return (
     <AnimatePresence>
       <div className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 md:p-12">
-        <motion.div 
-          initial={{ opacity: 0 }} 
-          animate={{ opacity: 1 }} 
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
           className="absolute inset-0 bg-black/80 backdrop-blur-xl"
           onClick={onClose}
         ></motion.div>
 
-        <motion.div 
+        <motion.div
           initial={{ opacity: 0, scale: 0.95, y: 20 }}
           animate={{ opacity: 1, scale: 1, y: 0 }}
           exit={{ opacity: 0, scale: 0.95, y: 20 }}
@@ -98,10 +98,10 @@ export default function WalkAnotherPathModal({ moment, isOpen, onClose }: WalkAn
                 <motion.div key="char" initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -20 }}>
                   <h2 className="text-3xl md:text-4xl font-serif text-white uppercase tracking-widest mb-2">Select Perspective</h2>
                   <p className="text-muted text-lg font-light mb-12">Whose destiny do you wish to alter during <span className="text-primary font-bold">{moment.title}</span>?</p>
-                  
+
                   <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
                     {eventCharacters.map((char) => (
-                      <button 
+                      <button
                         key={char.id}
                         onClick={() => handleCharacterSelect(char.id)}
                         className="group flex flex-col items-center text-center p-6 rounded-2xl bg-white/5 border border-white/10 hover:border-primary/50 transition-all hover:bg-white/10"
@@ -124,7 +124,7 @@ export default function WalkAnotherPathModal({ moment, isOpen, onClose }: WalkAn
                   </div>
                   <h2 className="text-3xl md:text-4xl font-serif text-white uppercase tracking-widest mb-4">Rewrite Destiny</h2>
                   <p className="text-muted text-lg font-light mb-12">Instead of their historical action during <span className="text-primary font-bold">{moment.title}</span>, what should {selectedCharacter.name} do?</p>
-                  
+
                   <form onSubmit={handleDecisionSubmit} className="relative w-full">
                     <input
                       type="text"
@@ -134,7 +134,7 @@ export default function WalkAnotherPathModal({ moment, isOpen, onClose }: WalkAn
                       className="w-full bg-white/5 border border-white/20 rounded-xl py-6 px-8 text-white placeholder:text-white/30 focus:outline-none focus:border-primary transition-colors text-lg font-light"
                       autoFocus
                     />
-                    <button 
+                    <button
                       type="submit"
                       disabled={!decision.trim()}
                       className="absolute right-3 top-1/2 -translate-y-1/2 p-3 bg-primary text-black rounded-lg hover:scale-105 transition-transform disabled:opacity-50"
@@ -149,7 +149,7 @@ export default function WalkAnotherPathModal({ moment, isOpen, onClose }: WalkAn
               {/* STEP 3: OUTCOME */}
               {step === "OUTCOME" && selectedCharacter && (
                 <motion.div key="outcome" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="flex flex-col h-full relative">
-                  
+
                   <div className="flex items-center gap-4 mb-8 pb-8 border-b border-white/10">
                     <div className="w-16 h-16 rounded-full overflow-hidden border border-primary/50">
                       <img src={selectedCharacter.image} alt={selectedCharacter.name} className={`w-full h-full object-cover ${selectedCharacter.objectPosition}`} />
@@ -182,7 +182,7 @@ export default function WalkAnotherPathModal({ moment, isOpen, onClose }: WalkAn
                       </div>
                     )}
                   </div>
-                  
+
                   {!isLoading && completion && (
                     <div className="mt-8 pt-6 border-t border-white/10 flex justify-center">
                       <button onClick={handleReset} className="px-8 py-3 rounded-full border border-white/20 text-white/70 hover:bg-white/10 transition-colors uppercase tracking-widest text-sm font-bold">
