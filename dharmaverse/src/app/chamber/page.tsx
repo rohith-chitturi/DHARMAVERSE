@@ -7,6 +7,7 @@ import { characters } from "@/data/lore";
 import { useSettings } from "@/context/SettingsContext";
 import { Play, Pause, FastForward, User, Eye, ArrowRight, DoorOpen } from "lucide-react";
 import Image from "next/image";
+import { submitChamberSession } from "@/app/actions/chamber";
 
 type Turn = {
   speaker: string;
@@ -34,13 +35,21 @@ export default function NarrativeChamber() {
   const [introText, setIntroText] = useState("");
   const [userIntervention, setUserIntervention] = useState("");
   const [completed, setCompleted] = useState(false);
-  
   const endOfChatRef = useRef<HTMLDivElement>(null);
 
   // Auto-scroll
   useEffect(() => {
     endOfChatRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [turns]);
+
+  // Save to Cosmic Archive on completion
+  useEffect(() => {
+    if (completed && turns.length > 0 && selectedScenario) {
+      submitChamberSession(selectedScenario.scenarioId, settings.language, turns).catch(e => {
+        // Silently fail for guests
+      });
+    }
+  }, [completed, turns, selectedScenario, settings.language]);
 
   const handleStartScenario = (scenario: ScenarioContext) => {
     setSelectedScenario(scenario);

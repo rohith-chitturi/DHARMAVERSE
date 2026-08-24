@@ -45,7 +45,7 @@ export async function POST(req: Request) {
     }
 
     // Load their specific beliefs and state
-    const state = speaker.consciousnessStates[0] || { beliefs: speaker.beliefs || [] };
+    const state = speaker.consciousnessStates[0] || { beliefs: (speaker as any).beliefs || [] };
 
     // Format memory for the prompt
     const conversationHistory = pastTurns.map((t: any) => `${t.speakerName || t.speaker}: ${t.text}`).join('\n');

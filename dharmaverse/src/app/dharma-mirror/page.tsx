@@ -8,6 +8,7 @@ import { dharmaScenarios } from "@/data/dharmaScenarios";
 import { DharmaDecisionOption, DharmaProfile, DharmaDecision } from "@/data/types";
 import { calculateDharmaProfile } from "@/utils/dharmaEngine";
 import { useSettings } from "@/context/SettingsContext";
+import { submitDharmaProfile } from "@/app/actions/dharma";
 
 const SCENARIO_COUNT = 7;
 
@@ -45,14 +46,21 @@ export default function DharmaMirror() {
     }
   };
 
-  const generateProfile = (finalOptions: DharmaDecisionOption[]) => {
+  const generateProfile = async (finalOptions: DharmaDecisionOption[]) => {
     setIsGenerating(true);
     
-    setTimeout(() => {
+    setTimeout(async () => {
       const newProfile = calculateDharmaProfile(finalOptions, history);
       const newHistory = [...history, newProfile];
       localStorage.setItem("dharmaHistory", JSON.stringify(newHistory));
       
+      // Attempt to save to Cosmic Archive (fails silently if guest)
+      try {
+        await submitDharmaProfile(newProfile);
+      } catch (e) {
+        // Guest mode or network error, ignore
+      }
+
       setProfile(newProfile);
       setHistory(newHistory);
       setIsGenerating(false);

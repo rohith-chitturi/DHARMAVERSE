@@ -17,7 +17,7 @@ export async function POST(req: Request) {
 
     // Find the state that best matches this event's timeline order.
     // For simplicity, we just pass their general beliefs, but ideally we match event.timelineOrder with state.
-    const state = character.consciousnessStates[0] || { beliefs: character.beliefs || [] };
+    const state = character.consciousnessStates[0] || { beliefs: (character as any).beliefs || [] };
     
     // Accessibility formatting
     const langInstructions = settings?.language === "hi" 

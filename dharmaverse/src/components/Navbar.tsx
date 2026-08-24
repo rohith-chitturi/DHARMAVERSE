@@ -7,6 +7,7 @@ import { Menu, X, Settings2 } from "lucide-react";
 import { useState, useEffect } from "react";
 import { useSettings } from "@/context/SettingsContext";
 import SettingsModal from "@/components/SettingsModal";
+import AuthStatus from "@/components/AuthStatus";
 
 const navLinksKeyMapping = [
   { key: "nav.home", href: "/" },
@@ -78,6 +79,7 @@ export default function Navbar() {
             );
           })}
           
+          <AuthStatus />
           <button 
             onClick={() => setSettingsOpen(true)}
             className="p-2 text-white/50 hover:text-white bg-white/5 rounded-full hover:bg-white/10 transition-colors ml-4"

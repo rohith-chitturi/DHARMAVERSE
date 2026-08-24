@@ -1,0 +1,191 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// -----------------------------------------------------------------------------
+// USER & AUTHENTICATION (Auth.js compatible models)
+// -----------------------------------------------------------------------------
+
+model User {
+  id            String    @id @default(cuid())
+  name          String?
+  email         String?   @unique
+  emailVerified DateTime?
+  image         String?
+  isGuest       Boolean   @default(false)
+  
+  accounts      Account[]
+  sessions      Session[]
+
+  // Dharmaverse Specific Relations
+  dharmaProfiles       DharmaProfile[]
+  dharmaEvolutions     DharmaEvolution[]
+  chamberSessions      ChamberSession[]
+  discoveredLore       DiscoveredLore[]
+  preferences          UserPreference?
+  characterInteractions CharacterInteraction[]
+  eventInteractions    EventInteraction[]
+
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+}
+
+model Account {
+  id                String  @id @default(cuid())
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String? @db.Text
+  access_token      String? @db.Text
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String? @db.Text
+  session_state     String?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model VerificationToken {
+  identifier String
+  token      String   @unique
+  expires    DateTime
+
+  @@unique([identifier, token])
+}
+
+// -----------------------------------------------------------------------------
+// DHARMAVERSE DOMAIN MODELS
+// -----------------------------------------------------------------------------
+
+model DharmaProfile {
+  id                 String   @id @default(cuid())
+  userId             String
+  user               User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  primaryArchetype   String
+  secondaryArchetype String
+  coreStrength       String
+  coreWeakness       String
+  scores             Json     // Stores the vectors
+  yourKurukshetra    String
+  
+  evolutions         DharmaEvolution[]
+  
+  createdAt          DateTime @default(now())
+}
+
+model DharmaEvolution {
+  id                 String   @id @default(cuid())
+  userId             String
+  user               User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  profileId          String
+  profile            DharmaProfile @relation(fields: [profileId], references: [id], onDelete: Cascade)
+  
+  primaryArchetype   String
+  secondaryArchetype String
+  scores             Json     // Historical snapshot of the scores
+  
+  createdAt          DateTime @default(now())
+}
+
+model ChamberSession {
+  id                 String   @id @default(cuid())
+  userId             String
+  user               User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  scenarioId         String
+  language           String
+  datePlayed         DateTime @default(now())
+  
+  messages           ChamberMessage[]
+  
+  createdAt          DateTime @default(now())
+  updatedAt          DateTime @updatedAt
+}
+
+model ChamberMessage {
+  id                 String   @id @default(cuid())
+  sessionId          String
+  session            ChamberSession @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+  
+  speakerId          String   // 'user' or characterId
+  text               String   @db.Text
+  turnIndex          Int
+  
+  createdAt          DateTime @default(now())
+}
+
+model DiscoveredLore {
+  id                 String   @id @default(cuid())
+  userId             String
+  user               User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  type               String   // 'CHARACTER', 'EVENT', 'RELATIONSHIP'
+  entityId           String   // e.g. 'karna', 'dice_sabha'
+  
+  discoveredAt       DateTime @default(now())
+  
+  @@unique([userId, type, entityId])
+}
+
+model UserPreference {
+  id                 String   @id @default(cuid())
+  userId             String   @unique
+  user               User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  language           String   @default("en")
+  complexity         String   @default("Detailed")
+  epicKnowledge      String   @default("Familiar")
+  audioModeEnabled   Boolean  @default(false)
+  
+  createdAt          DateTime @default(now())
+  updatedAt          DateTime @updatedAt
+}
+
+model CharacterInteraction {
+  id                 String   @id @default(cuid())
+  userId             String
+  user               User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  characterId        String
+  interactionType    String
+  interactionCount   Int      @default(1)
+  
+  lastInteractionAt  DateTime @default(now())
+  createdAt          DateTime @default(now())
+  
+  @@unique([userId, characterId, interactionType])
+}
+
+model EventInteraction {
+  id                 String   @id @default(cuid())
+  userId             String
+  user               User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  eventId            String
+  interactionType    String
+  interactionCount   Int      @default(1)
+  
+  lastInteractionAt  DateTime @default(now())
+  createdAt          DateTime @default(now())
+  
+  @@unique([userId, eventId, interactionType])
+}
