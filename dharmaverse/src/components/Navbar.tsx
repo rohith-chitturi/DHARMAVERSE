@@ -17,6 +17,7 @@ const navLinksKeyMapping = [
   { key: "nav.universe", href: "/universe" },
   { key: "nav.dharmaMirror", href: "/dharma-mirror" },
   { key: "nav.epicJourney", href: "/epic" },
+  { key: "nav.chamber", href: "/chamber" },
   { key: "nav.about", href: "/about" },
 ];
 

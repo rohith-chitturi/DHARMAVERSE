@@ -6,7 +6,7 @@ import { Character, EventConsciousness } from "@/data/types";
 import { X, MessageSquare, Cpu, Activity, Send, Target } from "lucide-react";
 import { useChat } from "@ai-sdk/react";
 import { useSettings } from "@/context/SettingsContext";
-import { characters } from "@/data/characters";
+import { characters } from "@/data/lore";
 
 interface EventCharacterModalProps {
   characterId: string;

@@ -6,7 +6,7 @@ export const maxDuration = 30;
 
 export async function POST(req: Request) {
   try {
-    const { eventId, characterId, decision } = await req.json();
+    const { eventId, characterId, decision, settings } = await req.json();
 
     const event = moments.find(m => m.id === eventId);
     const character = characters.find(c => c.id === characterId);
@@ -18,6 +18,25 @@ export async function POST(req: Request) {
     // Find the state that best matches this event's timeline order.
     // For simplicity, we just pass their general beliefs, but ideally we match event.timelineOrder with state.
     const state = character.consciousnessStates[0] || { beliefs: character.beliefs || [] };
+    
+    // Accessibility formatting
+    const langInstructions = settings?.language === "hi" 
+      ? "RESPOND ENTIRELY IN NATURAL HINDI. Do not use awkward literal translations." 
+      : settings?.language === "te" 
+      ? "RESPOND ENTIRELY IN NATURAL TELUGU. Do not use awkward literal translations." 
+      : "RESPOND IN ENGLISH.";
+
+    const readInstructions = settings?.readability === "simple"
+      ? "Use simple language. Avoid extremely complex historical terms."
+      : settings?.readability === "scholar"
+      ? "Use highly sophisticated, scholarly language with precise historical terminology."
+      : "Use a balanced, cinematic narrative tone.";
+      
+    const knowInstructions = settings?.knowledge === "new"
+      ? "Explain the context as if the user is completely new to the Mahabharata."
+      : settings?.knowledge === "enthusiast"
+      ? "The user is an enthusiast. You do not need to explain basic relationships."
+      : "The user has basic familiarity.";
 
     const systemPrompt = `
 You are the Perspective Engine of DHARMAVERSE.
@@ -43,6 +62,12 @@ Calculate the immediate butterfly effect of this decision.
 3. What is the immediate consequence for the Kuru dynasty? Does the war end early, or does it become worse?
 
 Write a highly cinematic, gripping narrative response (approx 300 words). Do not use markdown headers. Use immersive storytelling.
+
+CRITICAL INSTRUCTIONS:
+- ${langInstructions}
+- ${readInstructions}
+- ${knowInstructions}
+- The user may ask questions in Hinglish or Tanglish. ALWAYS detect their input language gracefully, but YOU MUST reply in the requested target language (${settings?.language || 'en'}).
 `;
 
     const result = streamText({
@@ -51,7 +76,7 @@ Write a highly cinematic, gripping narrative response (approx 300 words). Do not
       prompt: "Simulate this timeline branch.",
     });
 
-    return result.toDataStreamResponse();
+    return result.toTextStreamResponse();
   } catch (error) {
     console.error("Perspective API Error:", error);
     return new Response("Internal Server Error", { status: 500 });

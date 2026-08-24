@@ -5,6 +5,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Character } from "@/data/types";
 import { X, Network, Activity } from "lucide-react";
 import { useCompletion } from "@ai-sdk/react";
+import { useSettings } from "@/context/SettingsContext";
 
 interface OracleModalProps {
   sourceCharacter: Character;
@@ -15,6 +16,7 @@ interface OracleModalProps {
 
 export default function OracleModal({ sourceCharacter, targetCharacterId, isOpen, onClose }: OracleModalProps) {
   const [targetChar, setTargetChar] = useState<Character | null>(null);
+  const { settings } = useSettings();
 
   // Use completion to fetch the Relationship Oracle insight
   const { completion, complete, isLoading, setCompletion } = useCompletion({
@@ -28,7 +30,8 @@ export default function OracleModal({ sourceCharacter, targetCharacterId, isOpen
       complete("", {
         body: {
           sourceId: sourceCharacter.id,
-          targetId: targetCharacterId
+          targetId: targetCharacterId,
+          settings: settings
         }
       });
     }

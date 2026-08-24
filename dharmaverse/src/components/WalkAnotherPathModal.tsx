@@ -6,6 +6,7 @@ import { EpicEvent } from "@/data/types";
 import { characters } from "@/data/lore";
 import { X, Eye, GitBranch, ArrowRight } from "lucide-react";
 import { useCompletion } from "@ai-sdk/react";
+import { useSettings } from "@/context/SettingsContext";
 
 interface WalkAnotherPathModalProps {
   moment: EpicEvent;
@@ -20,6 +21,8 @@ export default function WalkAnotherPathModal({ moment, isOpen, onClose }: WalkAn
 
   const eventCharacters = characters.filter(c => moment.characters.includes(c.id));
   const selectedCharacter = characters.find(c => c.id === selectedCharId);
+
+  const { settings } = useSettings();
 
   const { completion, complete, isLoading, setCompletion } = useCompletion({
     api: "/api/perspective",
@@ -40,7 +43,8 @@ export default function WalkAnotherPathModal({ moment, isOpen, onClose }: WalkAn
       body: {
         eventId: moment.id,
         characterId: selectedCharId,
-        decision: decision
+        decision: decision,
+        settings: settings
       }
     });
   };

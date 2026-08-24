@@ -59,7 +59,7 @@ Respond to the user's latest message in character, maintaining your timeline awa
       messages,
     });
 
-    return result.toDataStreamResponse();
+    return result.toTextStreamResponse();
   } catch (error) {
     console.error("Awaken API Error:", error);
     return new Response("Internal Server Error", { status: 500 });
