@@ -44,7 +44,7 @@ export default function EventCharacterModal({ characterId, momentTitle, eventCon
       mode: selectedMode,
       accessibility: settings
     }
-  }) as any;
+  } as any);
 
   const chatContainerRef = useRef<HTMLDivElement>(null);
 
@@ -176,7 +176,7 @@ export default function EventCharacterModal({ characterId, momentTitle, eventCon
                       </div>
                     )}
                     
-                    {messages.map((m, i) => (
+                    {messages.map((m: any, i: number) => (
                       <div key={i} className={`flex ${m.role === 'user' ? 'justify-end' : 'justify-start'}`}>
                         <div className={`max-w-[85%] md:max-w-[70%] rounded-2xl p-6 ${
                           m.role === 'user' 
