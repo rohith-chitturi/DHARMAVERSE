@@ -138,6 +138,55 @@ Calculate the immediate butterfly effect of this decision.
 Write a highly cinematic, gripping narrative response (approx 300 words). Do not use markdown headers. Use immersive storytelling.
     `.trim();
   }
+
+  /**
+   * Assembles the context for the Relationship Oracle Engine.
+   */
+  assembleOraclePrompt(
+    sourceId: string,
+    targetId: string,
+    userContext: UserNarrativeContext | null
+  ): string {
+    const sourceLore = loreRetrievalService.getCharacterContext(sourceId);
+    const targetLore = loreRetrievalService.getCharacterContext(targetId);
+
+    if (!sourceLore || !targetLore) throw new Error("Characters not found");
+
+    const relationData = sourceLore.relationships.find(r => r.id === targetId);
+    
+    // Personalization Signals
+    const personalizationSignals = personalizationEngine.generateSignals(userContext);
+
+    return `
+You are the Relationship Oracle of the DHARMAVERSE, an omniscient archivist of the Mahabharata.
+Your task is to analyze the relationship between ${sourceLore.name} and ${targetLore.name}.
+
+## GRAPH DATA
+- Source: ${sourceLore.name} (${sourceLore.archetype})
+- Target: ${targetLore.name} (${targetLore.archetype})
+- Core Relation: ${relationData?.relation || 'Unknown'}
+- Bond Strength: ${relationData?.strength || 50}/100
+
+## THE OBSERVER (USER)
+Epic Knowledge Level: ${userContext?.epicKnowledge || 'NEWCOMER'}
+Language Preference: ${userContext?.language || 'en'}
+
+## NARRATIVE DIRECTIVES (Follow subtly)
+${personalizationSignals.map(s => `- ${s}`).join('\n')}
+- The user may ask questions in Hinglish or Tanglish. ALWAYS detect their input language gracefully, but YOU MUST reply in their preferred language script.
+- Adapt the explanation depth based on their Epic Knowledge Level (Newcomers need basic relationship context, Enthusiasts want deep philosophical dynamics).
+
+## YOUR TASK
+Provide a highly cinematic, emotionally resonant analysis of their relationship. Do not use generic chatbot language. Write like a grand historian.
+Structure your response gracefully without markdown headers if possible, just strong cinematic paragraphs.
+Cover:
+1. The Origin of their bond (or rivalry).
+2. The core emotional dynamic (e.g., duty vs love, blinding loyalty, karmic debt).
+3. The ultimate tragic or triumphant culmination of their relationship in the epic.
+
+Keep it under 300 words. Speak with gravitas.
+    `.trim();
+  }
 }
 
 export const contextAssembler = new ContextAssembler();
