@@ -202,7 +202,7 @@ export default function SimulationChamber() {
 
       {selectedCharId && (
         <EventCharacterModal 
-          character={characters.find(c => c.id === selectedCharId)!}
+          characterId={selectedCharId}
           eventConsciousness={eventConsciousness}
           momentTitle={moment.title}
           isOpen={!!selectedCharId}
