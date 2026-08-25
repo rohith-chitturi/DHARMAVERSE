@@ -82,6 +82,62 @@ ${personalizationSignals.map(s => `- ${s}`).join('\n')}
 5. NEVER explicitly mention the user's "Dharma Profile" or explicitly say "You are like me." Incorporate themes naturally.
     `.trim();
   }
+
+  /**
+   * Assembles the context for the Perspective Engine (Alternate Timeline Simulation).
+   */
+  assemblePerspectivePrompt(
+    eventId: string,
+    characterId: string,
+    decision: string,
+    userContext: UserNarrativeContext | null
+  ): string {
+    const characterLore = loreRetrievalService.getCharacterContext(characterId);
+    if (!characterLore) throw new Error("Character not found");
+
+    const eventLore = loreRetrievalService.getEventContext(eventId);
+    if (!eventLore) throw new Error("Event not found");
+
+    // We don't have a specific stateId here, just use their general beliefs or the first state
+    const state = characterLore.consciousnessStates?.[0] || { beliefs: [] as string[] };
+    
+    // Personalization Signals
+    const personalizationSignals = personalizationEngine.generateSignals(userContext);
+
+    return `
+You are the Perspective Engine of DHARMAVERSE.
+The user is simulating an Alternate Timeline during the event: ${eventLore.title}.
+
+## HISTORICAL CONTEXT
+${eventLore.description}
+Historical Consequences: ${eventLore.tensions.join(', ')}
+
+## THE ACTOR
+${characterLore.name} (${characterLore.archetype})
+Core Beliefs at this time:
+${state.beliefs.map((b: string) => `- ${b}`).join('\n')}
+
+## THE ALTERNATE DECISION
+Instead of their historical action, the user has decreed that ${characterLore.name} will: "${decision}"
+
+## THE OBSERVER (USER)
+Epic Knowledge Level: ${userContext?.epicKnowledge || 'NEWCOMER'}
+Language Preference: ${userContext?.language || 'en'}
+
+## NARRATIVE DIRECTIVES (Follow subtly)
+${personalizationSignals.map(s => `- ${s}`).join('\n')}
+- The user may ask questions in Hinglish or Tanglish. ALWAYS detect their input language gracefully, but YOU MUST reply in their preferred language script.
+- Adapt the explanation depth based on their Epic Knowledge Level (Newcomers need basics, Enthusiasts want deep cuts).
+
+## YOUR TASK
+Calculate the immediate butterfly effect of this decision.
+1. How does ${characterLore.name} internally justify this new action based on their core beliefs? (Are they breaking their dharma, or fulfilling a higher one?)
+2. How do the other characters present react immediately?
+3. What is the immediate consequence for the Kuru dynasty?
+
+Write a highly cinematic, gripping narrative response (approx 300 words). Do not use markdown headers. Use immersive storytelling.
+    `.trim();
+  }
 }
 
 export const contextAssembler = new ContextAssembler();
