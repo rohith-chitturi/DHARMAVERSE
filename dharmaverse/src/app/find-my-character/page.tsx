@@ -7,7 +7,7 @@ import Link from "next/link";
 import { characters } from "@/data/lore";
 import { ArrowRight, Sparkles } from "lucide-react";
 
-const questions = [
+const questions: { id: number, text: string, options: { text: string, scores: Record<string, number> }[] }[] = [
   {
     id: 1,
     text: "How do you react to betrayal?",
