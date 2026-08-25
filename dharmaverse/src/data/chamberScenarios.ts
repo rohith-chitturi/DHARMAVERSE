@@ -176,5 +176,65 @@ export const chamberScenarios: ScenarioContext[] = [
     defaultLanguage: "en",
     eventEmotion: "Blinding Rage and Grief",
     worldState: "The Pandava camp is mourning. The rules of war have been permanently broken."
+  },
+  {
+    scenarioId: "day_17_kaurava",
+    slug: "day-17-kaurava",
+    title: "Kaurava Camp (Day 17)",
+    description: "The Kaurava camp on the 17th day of the Kurukshetra war.",
+    timelineState: "Kurukshetra Day 17",
+    activeCharacters: ["karna", "shalya", "duryodhana"],
+    eventContext: "Karna is the Supreme Commander. The army is desperate. Karna knows he must face Arjuna today, and Shalya is acting as his charioteer, though there is massive tension between them.",
+    initialTensions: [
+      "Karna's determination vs the realization of his curses.",
+      "Shalya's relentless demoralization of Karna.",
+      "Duryodhana's desperate hope for victory through Karna."
+    ],
+    objectives: {
+      karna: "Maintain morale and prepare to slay Arjuna at all costs.",
+      shalya: "Erode Karna's confidence while technically fulfilling his duty as charioteer.",
+      duryodhana: "Ensure Karna does not falter, for he is the last true hope."
+    },
+    historicalConstraints: [
+      "Bhishma and Drona are dead.",
+      "Karna has given his Kavacha and Kundala to Indra.",
+      "Karna has promised Kunti he will only kill Arjuna."
+    ],
+    allowedTopics: ["Arjuna", "Curses", "Charioteer", "Victory", "Death", "Promises"],
+    initialSpeaker: "karna",
+    maxTurns: 10,
+    defaultLanguage: "en",
+    eventEmotion: "Desperate resolve and underlying fatalism",
+    worldState: "The Kaurava army is shaken but rallying behind Karna for one final push."
+  },
+  {
+    scenarioId: "day_17_pandava",
+    slug: "day-17-pandava",
+    title: "Pandava Camp (Day 17)",
+    description: "The Pandava camp on the 17th day of the Kurukshetra war.",
+    timelineState: "Kurukshetra Day 17",
+    activeCharacters: ["arjuna", "krishna", "yudhishthira"],
+    eventContext: "Yudhishthira was severely injured and humiliated by Karna earlier today, causing a brief falling out between him and Arjuna. Arjuna has vowed to slay Karna before sunset.",
+    initialTensions: [
+      "Yudhishthira's anger and humiliation vs Arjuna's duty.",
+      "Arjuna's vow to kill Karna today.",
+      "Krishna's urgent strategic focus on ending Karna."
+    ],
+    objectives: {
+      arjuna: "Fulfill his vow and reassure his brother.",
+      krishna: "Keep Arjuna focused on the task and remind him that Karna is his equal.",
+      yudhishthira: "Demand immediate vengeance for his humiliation."
+    },
+    historicalConstraints: [
+      "Abhimanyu is dead.",
+      "Yudhishthira has retreated from the battlefield.",
+      "The sun is beginning to set."
+    ],
+    allowedTopics: ["Karna", "Vows", "Humiliation", "Sunset", "Duty"],
+    initialSpeaker: "yudhishthira",
+    maxTurns: 10,
+    defaultLanguage: "en",
+    eventEmotion: "Urgent, tense, focused wrath",
+    worldState: "The Pandava forces are waiting for Arjuna to fulfill his vow before the sun sets."
   }
 ];

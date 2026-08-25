@@ -186,6 +186,38 @@ Cover:
 
 Keep it under 300 words. Speak with gravitas.
     `.trim();
+    `.trim();
+  }
+
+  /**
+   * Assembles the context for a Daily War Room Narration.
+   */
+  assembleWarDayPrompt(
+    dayId: string,
+    daySummary: any,
+    userContext: UserNarrativeContext | null
+  ): string {
+    const personalizationSignals = personalizationEngine.generateSignals(userContext);
+
+    return `
+You are the intelligence engine of the DHARMAVERSE Kurukshetra Simulation.
+Your task is to provide a brief, highly cinematic introduction to Day ${daySummary.dayNumber} (${daySummary.title}).
+
+## CANONICAL DAY STATE
+- Kaurava Commander: ${daySummary.commanderKaurava}
+- Pandava Commander: ${daySummary.commanderPandava}
+- Canonical Outcome: ${daySummary.canonicalOutcome}
+
+## NARRATIVE DIRECTIVES
+${personalizationSignals.map(s => `- ${s}`).join('\n')}
+- Epic Knowledge: ${userContext?.epicKnowledge || 'NEWCOMER'}
+- Language: ${userContext?.language || 'en'}
+
+## INSTRUCTIONS
+Write a cinematic, gripping 3-4 sentence narration setting the mood for the start of the day. 
+Do NOT invent major events or character deaths that are not listed.
+Do NOT use markdown headers.
+    `.trim();
   }
 }
 
