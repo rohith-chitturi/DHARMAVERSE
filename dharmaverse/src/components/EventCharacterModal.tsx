@@ -16,9 +16,12 @@ interface EventCharacterModalProps {
   onClose: () => void;
 }
 
+import VoicePlayer from "@/components/VoicePlayer";
+
 export default function EventCharacterModal({ characterId, momentTitle, eventConsciousness, isOpen, onClose }: EventCharacterModalProps) {
   const [step, setStep] = useState<"MODE" | "INITIALIZING" | "CHAT">("MODE");
   const [selectedMode, setSelectedMode] = useState<string>("");
+  const [isSpeaking, setIsSpeaking] = useState<boolean>(false);
   const { settings } = useSettings();
   
   const character = characters.find(c => c.id === characterId);
@@ -56,6 +59,7 @@ export default function EventCharacterModal({ characterId, momentTitle, eventCon
     if (isOpen) {
       setStep("MODE");
       setSelectedMode("");
+      setIsSpeaking(false);
     }
   }, [isOpen]);
 
@@ -69,7 +73,7 @@ export default function EventCharacterModal({ characterId, momentTitle, eventCon
     }, 2000);
   };
 
-  if (!isOpen) return null;
+  if (!isOpen || !character) return null;
 
   return (
     <AnimatePresence>
@@ -91,14 +95,14 @@ export default function EventCharacterModal({ characterId, momentTitle, eventCon
           {/* Header */}
           <div className="flex items-center justify-between p-6 border-b border-white/5 bg-white/5 z-20">
             <div className="flex items-center gap-4">
-              <div className="w-12 h-12 rounded-full overflow-hidden border border-white/20 relative">
-                <div className={`absolute inset-0 bg-gradient-to-t ${character.theme} opacity-50`}></div>
-                <img src={character.image} alt={character.name} className={`w-full h-full object-cover ${character.objectPosition}`} />
+              <div className={`w-12 h-12 rounded-full overflow-hidden border border-white/20 relative transition-all duration-500 ${isSpeaking ? 'ring-2 ring-primary ring-offset-2 ring-offset-black scale-110 shadow-[0_0_20px_rgba(212,175,55,0.4)]' : ''}`}>
+                <div className={`absolute inset-0 bg-gradient-to-t ${character.theme} opacity-50 ${isSpeaking ? 'animate-pulse' : ''}`}></div>
+                <img src={character.image} alt={character.name} className={`w-full h-full object-cover ${character.objectPosition} ${isSpeaking ? 'brightness-125' : ''}`} />
               </div>
               <div>
                 <h3 className="text-xl font-bold text-white uppercase tracking-widest leading-none">{character.name}</h3>
                 <p className="text-xs text-primary uppercase tracking-[0.2em] mt-1 flex items-center gap-2">
-                  <Activity className="w-3 h-3" /> Event-Synchronized Consciousness
+                  <Activity className={`w-3 h-3 ${isSpeaking ? 'animate-pulse' : ''}`} /> {isSpeaking ? 'Entity Resonating' : 'Event-Synchronized Consciousness'}
                 </p>
               </div>
             </div>
@@ -109,7 +113,7 @@ export default function EventCharacterModal({ characterId, momentTitle, eventCon
 
           {/* Content Area */}
           <div className="flex-1 relative overflow-hidden flex flex-col">
-            <div className={`absolute inset-0 bg-gradient-to-br ${character.theme} opacity-5 pointer-events-none`}></div>
+            <div className={`absolute inset-0 bg-gradient-to-br ${character.theme} pointer-events-none transition-opacity duration-1000 ${isSpeaking ? 'opacity-15' : 'opacity-5'}`}></div>
 
             <AnimatePresence mode="wait">
               {/* STEP 1: MODE */}
@@ -182,7 +186,19 @@ export default function EventCharacterModal({ characterId, momentTitle, eventCon
                           {m.role === 'assistant' && (
                             <p className="text-[10px] text-primary uppercase tracking-[0.3em] mb-3 font-bold">{character.name}</p>
                           )}
-                          <p className="leading-relaxed whitespace-pre-wrap font-light text-lg">{m.content}</p>
+                          <p className="leading-relaxed whitespace-pre-wrap font-light text-lg mb-4">{m.content}</p>
+                          
+                          {/* Audio Player Integration for AI responses */}
+                          {m.role === 'assistant' && !isLoading && (
+                            <div className="mt-4 pt-4 border-t border-white/5">
+                              <VoicePlayer 
+                                characterId={characterId} 
+                                text={m.content} 
+                                onPlaybackStart={() => setIsSpeaking(true)}
+                                onPlaybackEnd={() => setIsSpeaking(false)}
+                              />
+                            </div>
+                          )}
                         </div>
                       </div>
                     ))}
