@@ -35,7 +35,7 @@ export default function EventCharacterModal({ characterId, momentTitle, eventCon
   const objective = eventConsciousness.eventObjectives.find(o => o.characterId === characterId)?.objective || "Survive the event.";
 
   // AI Chat hook
-  const { messages, input, handleInputChange, handleSubmit, isLoading } = useChat({
+  const { messages, input, handleInputChange, handleSubmit, isLoading }: any = useChat({
     api: "/api/experience",
     body: {
       characterId,

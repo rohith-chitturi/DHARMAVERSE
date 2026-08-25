@@ -31,7 +31,7 @@ export default function AwakenModal({ character, isOpen, onClose }: AwakenModalP
   ];
 
   // AI Chat hook
-  const { messages, input, handleInputChange, handleSubmit, isLoading } = useChat({
+  const { messages, input, handleInputChange, handleSubmit, isLoading }: any = useChat({
     api: "/api/awaken",
     body: {
       characterId: character.id,

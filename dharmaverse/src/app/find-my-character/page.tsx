@@ -128,7 +128,7 @@ export default function FindMyCharacter() {
               {questions[currentQIndex].options.map((opt, i) => (
                 <button 
                   key={i}
-                  onClick={() => handleAnswer(opt.scores as Record<string, number>)}
+                  onClick={() => handleAnswer(opt.scores as unknown as Record<string, number>)}
                   className="group relative w-full p-6 md:p-8 rounded-2xl bg-white/5 border border-white/10 hover:border-primary/50 text-left transition-all overflow-hidden"
                 >
                   <div className="absolute inset-0 bg-gradient-to-r from-primary/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
