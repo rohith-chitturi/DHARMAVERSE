@@ -1,9 +1,10 @@
-import { getJourneyData } from "@/lib/services/journeyService";
+import { getJourneyData, getUserNarrativeContext } from "@/lib/services/journeyService";
+import { recommendationEngine } from "@/lib/intelligence/RecommendationEngine";
 import { auth } from "@/auth";
 import Link from "next/link";
-import { TreeDeciduous, Compass, Eye, Activity, SaveAll } from "lucide-react";
+import { TreeDeciduous, Compass, Activity, SaveAll, Star } from "lucide-react";
 import { characters, moments as events } from "@/data/lore";
-import Image from "next/image";
+import DharmaConstellation from "@/components/DharmaConstellation";
 
 export default async function JourneyPage() {
   const session = await auth();
@@ -15,7 +16,6 @@ export default async function JourneyPage() {
         <p className="text-white/50 mb-8 max-w-lg font-light leading-relaxed">
           Your journey through the DHARMAVERSE is ephemeral unless anchored. Sign in to preserve your Dharma Evolution, save historical Chamber Sessions, and track your discoveries.
         </p>
-        {/* We can use a client component for the auth buttons, or next-auth signIn link */}
         <Link href="/api/auth/signin" className="px-8 py-4 bg-primary text-black font-bold uppercase tracking-widest rounded-full hover:scale-105 transition-transform">
           Preserve Your Journey
         </Link>
@@ -24,9 +24,15 @@ export default async function JourneyPage() {
   }
 
   const { latestProfile, evolutionHistory, chamberSessions, discoveries } = await getJourneyData();
+  const narrativeContext = await getUserNarrativeContext();
+  
+  const recommendations = narrativeContext ? recommendationEngine.generateRecommendations(narrativeContext) : [];
 
   const discoveredCharacters = discoveries.filter(d => d.type === "CHARACTER");
   const discoveredEvents = discoveries.filter(d => d.type === "EVENT");
+
+  // Gather all explored nodes from user context for Constellation
+  const constellationNodes = narrativeContext ? [...narrativeContext.knownCharacters, ...narrativeContext.knownEvents] : [];
 
   return (
     <div className="min-h-screen bg-[#05070A] text-white pt-32 pb-32">
@@ -43,7 +49,56 @@ export default async function JourneyPage() {
           )}
         </div>
 
-        {/* Section 1: Dharma Evolution */}
+        {/* Section 0: YOUR NEXT PATH */}
+        {recommendations.length > 0 && (
+          <div className="mb-24">
+            <div className="flex items-center gap-3 mb-8">
+              <Star className="text-primary w-6 h-6" />
+              <h2 className="text-2xl font-bold uppercase tracking-widest text-white">Your Next Path</h2>
+            </div>
+            
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              {recommendations.map((rec, i) => (
+                <div key={rec.id} className={`bg-gradient-to-br from-white/5 to-transparent border ${i === 0 ? 'border-primary/50 ring-1 ring-primary/20' : 'border-white/10'} rounded-2xl p-6 flex flex-col h-full relative overflow-hidden group`}>
+                  {i === 0 && <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-primary to-transparent"></div>}
+                  
+                  <div className="mb-auto">
+                    <p className="text-[10px] text-primary uppercase tracking-widest mb-2 font-bold">
+                      {i === 0 ? 'Primary Recommendation' : 'Suggested Path'}
+                    </p>
+                    <h3 className="text-2xl font-serif uppercase tracking-widest text-white mb-2">{rec.title}</h3>
+                    <p className="text-white/80 font-light mb-6 text-sm">{rec.shortExplanation}</p>
+                    
+                    <div className="bg-black/40 border border-white/5 rounded-lg p-4 mb-6">
+                      <p className="text-[10px] text-white/50 uppercase tracking-widest mb-2">Why This Path?</p>
+                      <p className="text-xs text-white/70 italic leading-relaxed">{rec.whyThisPath}</p>
+                    </div>
+                  </div>
+                  
+                  <Link href={rec.url} className="w-full text-center px-4 py-3 bg-white/5 hover:bg-white/10 border border-white/10 text-white text-xs uppercase tracking-widest font-bold rounded-lg transition-colors">
+                    Embark
+                  </Link>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {/* Section 1: Dharma Constellation */}
+        {constellationNodes.length > 0 && (
+          <div className="mb-24">
+            <div className="flex items-center gap-3 mb-8">
+              <Activity className="text-primary w-6 h-6" />
+              <h2 className="text-2xl font-bold uppercase tracking-widest text-white">Dharma Constellation</h2>
+            </div>
+            <p className="text-white/50 mb-8 max-w-2xl font-light">
+              Your journey mapped through the epic. Bright nodes represent deep interactions and completed simulations. Faint nodes represent viewed entities.
+            </p>
+            <DharmaConstellation nodes={constellationNodes} />
+          </div>
+        )}
+
+        {/* Section 2: Dharma Evolution */}
         <div className="mb-24">
           <div className="flex items-center gap-3 mb-8">
             <TreeDeciduous className="text-primary w-6 h-6" />
@@ -87,39 +142,6 @@ export default async function JourneyPage() {
           )}
         </div>
 
-        {/* Section 2: Historical Memories (Chamber Sessions) */}
-        <div className="mb-24">
-          <div className="flex items-center gap-3 mb-8">
-            <SaveAll className="text-primary w-6 h-6" />
-            <h2 className="text-2xl font-bold uppercase tracking-widest text-white">Historical Memories</h2>
-          </div>
-          
-          {chamberSessions.length === 0 ? (
-            <div className="bg-white/5 border border-white/10 p-8 rounded-2xl text-center">
-              <p className="text-white/50 mb-4">No Akashic Chamber sessions preserved.</p>
-              <Link href="/chamber" className="text-primary hover:text-white uppercase tracking-widest text-xs font-bold transition-colors">
-                Enter the Chamber →
-              </Link>
-            </div>
-          ) : (
-            <div className="space-y-4">
-              {chamberSessions.map((session) => (
-                <div key={session.id} className="bg-white/[0.02] border border-white/10 p-6 rounded-2xl flex items-center justify-between hover:bg-white/[0.05] transition-colors cursor-pointer">
-                  <div>
-                    <h3 className="text-lg uppercase tracking-widest text-white mb-1">{session.scenarioId.replace(/_/g, ' ')}</h3>
-                    <p className="text-xs text-white/40 tracking-widest uppercase">
-                      {new Date(session.datePlayed).toLocaleDateString()} • {session.messages.length} Turns • Language: {session.language}
-                    </p>
-                  </div>
-                  <button className="text-primary hover:text-white transition-colors">
-                    <Eye className="w-5 h-5" />
-                  </button>
-                </div>
-              ))}
-            </div>
-          )}
-        </div>
-
         {/* Section 3: Discovered Lore */}
         <div className="mb-24">
           <div className="flex items-center gap-3 mb-8">
@@ -128,7 +150,6 @@ export default async function JourneyPage() {
           </div>
           
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            {/* Characters */}
             <div className="bg-white/5 border border-white/10 rounded-2xl p-6">
               <h3 className="text-sm text-white/50 uppercase tracking-[0.3em] font-bold mb-6 flex justify-between">
                 <span>Characters</span>
@@ -146,7 +167,6 @@ export default async function JourneyPage() {
               </div>
             </div>
 
-            {/* Events */}
             <div className="bg-white/5 border border-white/10 rounded-2xl p-6">
               <h3 className="text-sm text-white/50 uppercase tracking-[0.3em] font-bold mb-6 flex justify-between">
                 <span>Events</span>
@@ -163,19 +183,6 @@ export default async function JourneyPage() {
                 })}
               </div>
             </div>
-          </div>
-        </div>
-
-        {/* Section 4: Continue Exploring */}
-        <div>
-          <h2 className="text-xl font-bold uppercase tracking-widest text-white mb-6 text-center">Continue Exploring</h2>
-          <div className="flex justify-center gap-6">
-            <Link href="/characters" className="px-6 py-3 border border-white/20 rounded-full hover:bg-white/10 transition-colors uppercase tracking-widest text-xs font-bold text-white/70 hover:text-white">
-              Discover Characters
-            </Link>
-            <Link href="/chamber" className="px-6 py-3 border border-primary/50 text-primary rounded-full hover:bg-primary hover:text-black transition-colors uppercase tracking-widest text-xs font-bold">
-              Enter New Chamber
-            </Link>
           </div>
         </div>
 
