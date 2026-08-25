@@ -35,6 +35,15 @@ export class LoreRetrievalService {
   }
 
   /**
+   * Retrieves the first (default) consciousness state for a character
+   */
+  getFirstCharacterConsciousness(characterId: string) {
+    const char = characters.find((c) => c.id === characterId);
+    if (!char || !char.consciousnessStates || char.consciousnessStates.length === 0) return null;
+    return char.consciousnessStates[0];
+  }
+
+  /**
    * Retrieves the current event/moment context.
    */
   getEventContext(momentTitle: string) {
@@ -43,7 +52,7 @@ export class LoreRetrievalService {
 
     return {
       title: moment.title,
-      date: moment.date,
+      date: moment.timelineOrder,
       description: moment.description,
       tensions: moment.eventConsciousness?.eventTensions || [],
       objectives: moment.eventConsciousness?.eventObjectives || []

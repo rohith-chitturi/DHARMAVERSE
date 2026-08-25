@@ -31,7 +31,7 @@ export default function AwakenModal({ character, isOpen, onClose }: AwakenModalP
   ];
 
   // AI Chat hook
-  const { messages, input, handleInputChange, handleSubmit, isLoading } = useChat({
+  const { messages, input, handleInputChange, handleSubmit, isLoading }: any = useChat({
     api: "/api/awaken",
     body: {
       characterId: character.id,
@@ -40,7 +40,7 @@ export default function AwakenModal({ character, isOpen, onClose }: AwakenModalP
       mode: selectedMode,
       settings: settings
     }
-  });
+  } as any);
 
   const chatContainerRef = useRef<HTMLDivElement>(null);
 
@@ -237,7 +237,7 @@ export default function AwakenModal({ character, isOpen, onClose }: AwakenModalP
                       </div>
                     )}
                     
-                    {messages.map((m, i) => (
+                    {messages.map((m: any, i: number) => (
                       <div key={i} className={`flex ${m.role === 'user' ? 'justify-end' : 'justify-start'}`}>
                         <div className={`max-w-[85%] md:max-w-[70%] rounded-2xl p-6 ${
                           m.role === 'user' 
