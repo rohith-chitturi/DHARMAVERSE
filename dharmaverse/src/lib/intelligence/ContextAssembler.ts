@@ -99,7 +99,7 @@ ${personalizationSignals.map(s => `- ${s}`).join('\n')}
     if (!eventLore) throw new Error("Event not found");
 
     // We don't have a specific stateId here, just use their general beliefs or the first state
-    const state = characterLore.consciousnessStates?.[0] || { beliefs: [] as string[] };
+    const state = loreRetrievalService.getFirstCharacterConsciousness(characterId) || { beliefs: [] as string[] };
     
     // Personalization Signals
     const personalizationSignals = personalizationEngine.generateSignals(userContext);
