@@ -12,7 +12,7 @@ export async function GET(req: Request, { params }: { params: Promise<{ key: str
     }
 
     // Serve the audio file with appropriate headers
-    return new NextResponse(audioBuffer, {
+    return new NextResponse(audioBuffer as any, {
       headers: {
         "Content-Type": "audio/mpeg",
         "Cache-Control": "public, max-age=31536000, immutable"
