@@ -115,8 +115,8 @@ export const dharmaScenarios: DharmaDecision[] = [
           hi: "परिणामों की परवाह किए बिना असली अपराधी को बेनकाब करें।",
           te: "పరిణామాలతో సంబంధం లేకుండా నిజమైన అపరాధిని బహిర్గతం చేయండి."
         },
-        impact: { Justice: 10, Vengeance: 5, Compassion: -5 },
-        hiddenImpact: { Pragmatism: 5 },
+        impact: { Justice: 10, Compassion: -5 },
+        hiddenImpact: { Pragmatism: 5, Vengeance: 5 },
         epicConnection: "Your pursuit of the truth mirrors Arjuna's arrows—direct, unyielding, and devastating."
       }
     ]
@@ -155,7 +155,7 @@ export const dharmaScenarios: DharmaDecision[] = [
           hi: "उन्हें बचाते हुए वादे के अक्षरशः पालन करने के लिए एक खामी खोजें।",
           te: "వారిని రక్షిస్తూనే వాగ్దానాన్ని నెరవేర్చడానికి ఒక దారిని కనుగొనండి."
         },
-        impact: { Wisdom: 10, Pragmatism: 10, Duty: -5 },
+        impact: { Wisdom: 10, Duty: -5 },
         hiddenImpact: { Pragmatism: 10 },
         epicConnection: "Like Krishna, you bend the rules of reality to serve the higher good while technically maintaining the structure."
       }

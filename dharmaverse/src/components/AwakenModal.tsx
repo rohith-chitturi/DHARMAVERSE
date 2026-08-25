@@ -40,7 +40,7 @@ export default function AwakenModal({ character, isOpen, onClose }: AwakenModalP
       mode: selectedMode,
       settings: settings
     }
-  });
+  }) as any;
 
   const chatContainerRef = useRef<HTMLDivElement>(null);
 

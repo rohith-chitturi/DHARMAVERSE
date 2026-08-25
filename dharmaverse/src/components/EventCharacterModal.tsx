@@ -44,7 +44,7 @@ export default function EventCharacterModal({ characterId, momentTitle, eventCon
       mode: selectedMode,
       accessibility: settings
     }
-  });
+  }) as any;
 
   const chatContainerRef = useRef<HTMLDivElement>(null);
 
