@@ -17,6 +17,7 @@ interface EventCharacterModalProps {
 }
 
 import VoicePlayer from "@/components/VoicePlayer";
+import CinematicAIStatus from '@/components/CinematicAIStatus';
 
 export default function EventCharacterModal({ characterId, momentTitle, eventConsciousness, isOpen, onClose }: EventCharacterModalProps) {
   const [step, setStep] = useState<"MODE" | "INITIALIZING" | "CHAT">("MODE");
@@ -204,10 +205,8 @@ export default function EventCharacterModal({ characterId, momentTitle, eventCon
                     ))}
                     {isLoading && (
                       <div className="flex justify-start">
-                        <div className="bg-gradient-to-br from-white/5 to-transparent border border-white/10 rounded-2xl rounded-bl-sm p-6 flex items-center gap-2">
-                          <div className="w-2 h-2 bg-primary rounded-full animate-bounce"></div>
-                          <div className="w-2 h-2 bg-primary rounded-full animate-bounce" style={{ animationDelay: "0.2s" }}></div>
-                          <div className="w-2 h-2 bg-primary rounded-full animate-bounce" style={{ animationDelay: "0.4s" }}></div>
+                        <div className="bg-gradient-to-br from-black/80 to-transparent border border-primary/20 rounded-2xl rounded-bl-sm p-6 max-w-[85%] md:max-w-[70%]">
+                          <CinematicAIStatus />
                         </div>
                       </div>
                     )}

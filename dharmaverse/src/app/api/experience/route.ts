@@ -1,63 +1,59 @@
-import { google } from '@ai-sdk/google';
-import { streamText } from 'ai';
-import { characters } from '@/data/lore';
-import { EventConsciousness } from '@/data/types';
 import { getUserNarrativeContext } from '@/lib/services/journeyService';
-import { contextAssembler } from '@/lib/intelligence/ContextAssembler';
+import { dharmaOrchestrator } from '@/lib/agents/DharmaOrchestrator';
+import { AgentContext } from '@/lib/agents/contracts';
 
-export const maxDuration = 30;
+export const maxDuration = 30; // Vercel timeout
 
 export async function POST(req: Request) {
   try {
-    const { messages, characterId, eventConsciousness, momentTitle, mode, accessibility } = await req.json();
-
-    const character = characters.find(c => c.id === characterId);
-    if (!character) {
-      return new Response("Character not found", { status: 404 });
-    }
+    const { messages, characterId, eventConsciousness, momentTitle, mode, accessibility, warDayId, timelineState } = await req.json();
 
     const narrativeContext = await getUserNarrativeContext();
     
-    // We try to find a consciousness state that vaguely matches the event, otherwise fallback to their core beliefs.
-    const stateId = character.consciousnessStates[0]?.id;
+    // Extract the latest message
+    const latestMessage = messages[messages.length - 1]?.content || "";
 
-    // Use the central intelligence layer to construct the prompt
-    let systemPrompt = contextAssembler.assembleCharacterPrompt(
-      characterId,
-      narrativeContext,
-      momentTitle,
-      stateId
-    );
+    // Build the AgentContext
+    const agentContext: AgentContext = {
+      request: {
+        message: latestMessage,
+        recentMessages: messages,
+        category: 'CHARACTER' // Default classification for the experience UI
+      },
+      userContext: narrativeContext,
+      canonicalContext: {
+        characterId,
+        eventId: momentTitle, // 'momentTitle' was used as eventId in this route historically
+        warDayId,
+        timelineState,
+        eventConsciousness
+      },
+      options: {
+        mode,
+        accessibility
+      }
+    };
 
-    const ec = eventConsciousness as EventConsciousness;
-    const objective = ec.eventObjectives.find(o => o.characterId === characterId)?.objective || "Survive the event.";
+    // Run the multi-agent pipeline (Buffering occurs here, validation happens before returning)
+    const finalResponse = await dharmaOrchestrator.runExperiencePipeline(agentContext);
 
-    // Append experience-specific context safely at the end
-    systemPrompt += `
-
-## SIMULATION CHAMBER CONTEXT
-Political State: ${ec.worldState.politicalState}
-Unresolved Conflicts: ${ec.worldState.unresolvedConflicts.join(', ')}
-Event Emotion: ${ec.eventEmotion}
-
-GLOBAL EVENT TENSIONS CURRENTLY HAPPENING:
-${ec.eventTensions.map(t => `- ${t}`).join('\n')}
-
-YOUR SPECIFIC OBJECTIVE RIGHT NOW:
-"${objective}"
-
-CONVERSATION MODE:
-The user has approached you with the intent to "${mode}". 
-Keep your responses highly cinematic, intense, and grounded entirely in the active tensions and your current objective. Do not summarize the event; react to it as if it is happening right around you.
-`;
-
-    const result = streamText({
-      model: google('models/gemini-2.5-flash'),
-      system: systemPrompt,
-      messages,
+    // Stream the finalized response back to the client so `useChat` can consume it seamlessly
+    const encoder = new TextEncoder();
+    const stream = new ReadableStream({
+      start(controller) {
+        // Vercel AI SDK protocol for text chunks is '0:"text"\n'
+        controller.enqueue(encoder.encode(`0:${JSON.stringify(finalResponse)}\n`));
+        controller.close();
+      }
     });
 
-    return result.toTextStreamResponse();
+    return new Response(stream, {
+      headers: {
+        'Content-Type': 'text/plain; charset=utf-8',
+        'X-Vercel-AI-Data-Stream': 'v1'
+      }
+    });
+
   } catch (error) {
     console.error("Experience API Error:", error);
     return new Response("Internal Server Error", { status: 500 });

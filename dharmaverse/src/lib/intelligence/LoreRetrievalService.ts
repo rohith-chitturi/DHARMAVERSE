@@ -66,11 +66,11 @@ export class LoreRetrievalService {
   getKnownEntitiesSummary(knownCharacters: ExploredNode[], knownEvents: ExploredNode[]) {
     const charNames = knownCharacters
       .map(node => characters.find(c => c.id === node.id)?.name)
-      .filter(Boolean);
+      .filter((name): name is string => Boolean(name));
       
     const eventNames = knownEvents
       .map(node => moments.find(m => m.id === node.id)?.title || mapLocations.find(l => l.id === node.id)?.name)
-      .filter(Boolean);
+      .filter((name): name is string => Boolean(name));
 
     return {
       characters: charNames,
