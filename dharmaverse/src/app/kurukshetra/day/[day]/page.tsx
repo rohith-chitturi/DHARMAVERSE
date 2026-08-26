@@ -4,9 +4,12 @@ import Link from 'next/link';
 import BattlefieldMap from '@/components/kurukshetra/BattlefieldMap';
 import DharmaDecision from '@/components/kurukshetra/DharmaDecision';
 import DayNarration from '@/components/kurukshetra/DayNarration';
+import { markDiscovered } from '@/lib/services/discoveryService';
 
-export default async function WarDayPage({ params }: { params: { day: string } }) {
-  const dayData = warStateEngine.getWarDay(params.day);
+export default async function WarDayPage({ params }: { params: Promise<{ day: string }> }) {
+  const resolvedParams = await params;
+  await markDiscovered('kurukshetra_day', resolvedParams.day);
+  const dayData = warStateEngine.getWarDay(resolvedParams.day);
 
   if (!dayData) {
     return (

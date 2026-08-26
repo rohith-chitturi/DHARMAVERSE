@@ -4,6 +4,7 @@ import React, { useEffect, useState } from 'react';
 import { SimulationConsequences } from '@/data/kurukshetra';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
+import VoicePlayer from '@/components/VoicePlayer';
 
 interface AlternateTimelineViewProps {
   branchId: string;
@@ -123,9 +124,12 @@ export default function AlternateTimelineView({ branchId }: AlternateTimelineVie
             </div>
 
             {/* Narrative / Short-term */}
-            <div className="relative">
+            <div className="relative group">
               <div className="absolute -left-[41px] top-1 w-6 h-6 rounded-full bg-violet-900 border border-violet-400 shadow-[0_0_10px_rgba(139,92,246,0.5)]"></div>
               <h3 className="text-violet-400 font-cinzel tracking-widest text-sm mb-2 uppercase">SHORT-TERM DIVERGENCE</h3>
+              <div className="absolute -left-12 top-8 opacity-0 group-hover:opacity-100 transition-opacity">
+                <VoicePlayer characterId="sanjaya" text={consequences.narrative} />
+              </div>
               <p className="text-violet-100 text-lg leading-relaxed font-light">
                 {consequences.narrative}
               </p>
