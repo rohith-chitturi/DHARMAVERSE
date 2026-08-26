@@ -49,13 +49,16 @@ class AlternateTimelineEngine {
   /**
    * Saves the generated consequences to the branch.
    */
-  saveConsequences(branchId: string, consequences: SimulationConsequences) {
+  saveConsequences(branchId: string, consequences: SimulationConsequences, branchSummary?: string) {
     const branch = this.branches.get(branchId);
     if (!branch) {
       throw new Error(`Branch ${branchId} not found.`);
     }
     
     branch.consequences = consequences;
+    if (branchSummary) {
+      branch.branchSummary = branchSummary;
+    }
     this.branches.set(branchId, branch);
     return branch;
   }

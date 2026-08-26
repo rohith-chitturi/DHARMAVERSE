@@ -194,28 +194,40 @@ Keep it under 300 words. Speak with gravitas.
   assembleWarDayPrompt(
     dayId: string,
     daySummary: any,
-    userContext: UserNarrativeContext | null
+    userContext: UserNarrativeContext | null,
+    currentState?: string,
+    currentEvent?: any
   ): string {
     const personalizationSignals = personalizationEngine.generateSignals(userContext);
 
     return `
-You are the intelligence engine of the DHARMAVERSE Kurukshetra Simulation.
-Your task is to provide a brief, highly cinematic introduction to Day ${daySummary.dayNumber} (${daySummary.title}).
+You are Sanjaya, the mystic narrator of the DHARMAVERSE Kurukshetra Simulation.
+Your task is to provide a brief, highly cinematic narration for Day ${daySummary.dayNumber} (${daySummary.title}).
+
+## CURRENT SIMULATION STATE: ${currentState || 'DAY_START'}
+${currentEvent ? `
+Active Event: ${currentEvent.title}
+Location: ${currentEvent.location}
+Current Situation: ${currentEvent.description}
+Known Facts: ${currentEvent.canonicalFacts.join(' | ')}
+` : ''}
 
 ## CANONICAL DAY STATE
 - Kaurava Commander: ${daySummary.commanderKaurava}
 - Pandava Commander: ${daySummary.commanderPandava}
-- Canonical Outcome: ${daySummary.canonicalOutcome}
 
 ## NARRATIVE DIRECTIVES
 ${personalizationSignals.map(s => `- ${s}`).join('\n')}
 - Epic Knowledge: ${userContext?.epicKnowledge || 'NEWCOMER'}
 - Language: ${userContext?.language || 'en'}
 
-## INSTRUCTIONS
-Write a cinematic, gripping 3-4 sentence narration setting the mood for the start of the day. 
-Do NOT invent major events or character deaths that are not listed.
-Do NOT use markdown headers.
+## CRITICAL RULES
+1. Only describe the current moment and state.
+2. DO NOT reveal future events unless the user has reached that point chronologically.
+3. DO NOT foreshadow future events as established facts. 
+4. DO NOT invent battlefield developments.
+5. Write a cinematic, gripping 3-4 sentence narration setting the mood for the CURRENT state. 
+6. Do NOT use markdown headers.
     `.trim();
   }
 
@@ -247,15 +259,22 @@ Your task is to calculate the consequences of an Alternate Simulation branch.
 ${personalizationSignals.map(s => `- ${s}`).join('\n')}
 
 ## INSTRUCTIONS
-Calculate the butterfly effect. Return a RAW JSON string strictly adhering to this format (No markdown wrappers, no backticks, just the JSON):
+Calculate the butterfly effect causally.
+You must distinguish CANONICAL FACT from AI INTERPRETATION from ALTERNATE SPECULATION.
+Every alternate narrative summary must begin with: "In this alternate timeline..."
+Use confidence levels: "HIGH_CONFIDENCE", "PLAUSIBLE", "SPECULATIVE".
+
+Return a RAW JSON string strictly adhering to this format (No markdown wrappers, no backticks, just the JSON):
 {
-  "immediateConsequences": ["Effect 1", "Effect 2"],
-  "affectedCharacters": ["charId1", "charId2"],
-  "relationshipChanges": ["Description of change"],
-  "futureDivergences": ["Possible event 1", "Possible event 2"],
-  "narrative": "A cinematic paragraph (max 100 words) describing the short-term result.",
-  "nextPossiblePaths": ["Path 1"],
-  "canonicalReminder": "A 1-sentence reminder of what historically happened instead."
+  "immediateConsequence": { "text": "...", "confidence": "HIGH_CONFIDENCE" },
+  "affectedCharacter": { "characterId": "...", "text": "...", "confidence": "PLAUSIBLE" },
+  "characterReaction": { "text": "...", "confidence": "PLAUSIBLE" },
+  "strategicConsequence": { "text": "...", "confidence": "PLAUSIBLE" },
+  "shortTermDivergence": { "text": "...", "confidence": "SPECULATIVE" },
+  "longTermDivergence": { "text": "...", "confidence": "SPECULATIVE" },
+  "narrative": "In this alternate timeline... (cinematic summary of the short-term result)",
+  "canonicalReminder": "A 1-sentence reminder of what historically happened instead.",
+  "branchSummary": "A compact 2-3 sentence summary of this branch to be used as memory context for future AI calls."
 }
 
 DO NOT include any text before or after the JSON. The JSON must be perfectly valid.

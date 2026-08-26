@@ -1,35 +1,42 @@
 'use client';
 
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { useChat } from '@ai-sdk/react';
 import VoicePlayer from '@/components/VoicePlayer';
+import { DayState } from '@/data/kurukshetra';
 
 interface DayNarrationProps {
   warDayId: string;
+  currentState?: DayState;
 }
 
-export default function DayNarration({ warDayId }: DayNarrationProps) {
-  const { messages, append, isLoading } = useChat({
+export default function DayNarration({ warDayId, currentState }: DayNarrationProps) {
+  const { messages, append, isLoading, setMessages }: any = useChat({
     api: '/api/kurukshetra/narration',
-    id: `narration-${warDayId}`,
-    body: { warDayId }
-  });
+    id: `narration-${warDayId}-${currentState}`,
+    body: { warDayId, currentState }
+  } as any);
+
+  const prevRef = useRef(currentState);
 
   useEffect(() => {
+    // If state changes, clear previous messages and trigger a new narration
+    if (currentState !== prevRef.current) {
+      setMessages([]);
+      prevRef.current = currentState;
+    }
+    
     // Only fetch if we haven't already
     if (messages.length === 0 && !isLoading) {
       append({
         role: 'user',
-        content: 'Generate narration',
-        // In AI SDK, we can pass data in the body by overriding the request or passing data in the append call
-        // For simplicity, we'll pass it in a JSON body via fetch if useChat doesn't support body natively in append.
-        // Wait, useChat supports `body` in the hook options.
+        content: `Narrate the state: ${currentState || 'DAY_START'}`,
       } as any);
     }
-  }, [messages.length, isLoading, append]);
+  }, [messages.length, isLoading, append, currentState, setMessages]);
 
-  const lastMessage = messages[messages.length - 1];
-  const isFinished = !isLoading && messages.length > 0;
+  const lastMessage = (messages as any[])[(messages as any[]).length - 1];
+  const isFinished = !isLoading && (messages as any[]).length > 0;
 
   return (
     <section className="prose prose-invert prose-amber max-w-none relative group">

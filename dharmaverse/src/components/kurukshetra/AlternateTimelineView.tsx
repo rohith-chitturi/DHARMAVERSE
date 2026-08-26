@@ -91,59 +91,67 @@ export default function AlternateTimelineView({ branchId }: AlternateTimelineVie
             {/* Immediate Consequence */}
             <div className="relative">
               <div className="absolute -left-[41px] top-1 w-6 h-6 rounded-full bg-violet-900 border border-violet-400 shadow-[0_0_10px_rgba(139,92,246,0.5)]"></div>
-              <h3 className="text-violet-400 font-cinzel tracking-widest text-sm mb-2 uppercase">IMMEDIATE EFFECT</h3>
-              <ul className="space-y-2">
-                {consequences.immediateConsequences.map((c, i) => (
-                  <li key={i} className="text-violet-100 text-lg leading-relaxed">{c}</li>
-                ))}
-              </ul>
+              <h3 className="text-violet-400 font-cinzel tracking-widest text-sm mb-2 uppercase flex items-center gap-4">
+                IMMEDIATE EFFECT
+                <span className="text-[10px] px-2 py-1 bg-violet-950 border border-violet-800 text-violet-300">{consequences.immediateConsequence.confidence}</span>
+              </h3>
+              <p className="text-violet-100 text-lg leading-relaxed">{consequences.immediateConsequence.text}</p>
             </div>
 
-            {/* Affected Characters */}
+            {/* Affected Character & Reaction */}
             <div className="relative">
               <div className="absolute -left-[41px] top-1 w-6 h-6 rounded-full bg-slate-900 border border-violet-600"></div>
-              <h3 className="text-violet-500 font-cinzel tracking-widest text-sm mb-2 uppercase">CHARACTERS AFFECTED</h3>
-              <div className="flex gap-3 flex-wrap">
-                {consequences.affectedCharacters.map((char, i) => (
-                  <span key={i} className="px-3 py-1 bg-violet-950/50 border border-violet-800/50 rounded text-violet-200 capitalize">
-                    {char}
-                  </span>
-                ))}
+              <h3 className="text-violet-500 font-cinzel tracking-widest text-sm mb-2 uppercase flex items-center gap-4">
+                CHARACTER REACTION
+                <span className="text-[10px] px-2 py-1 bg-slate-900 border border-violet-800 text-violet-400">{consequences.characterReaction.confidence}</span>
+              </h3>
+              <div className="mb-2">
+                <span className="px-3 py-1 bg-violet-950/50 border border-violet-800/50 rounded text-violet-200 capitalize text-sm">
+                  {consequences.affectedCharacter.characterId || "Character"}
+                </span>
               </div>
-              
-              {consequences.relationshipChanges.length > 0 && (
-                <div className="mt-4 bg-black/40 p-4 border border-violet-900/30">
-                  <h4 className="text-xs text-violet-500/70 tracking-widest uppercase mb-2">Relationship Shifts</h4>
-                  <ul className="space-y-1">
-                    {consequences.relationshipChanges.map((rc, i) => (
-                      <li key={i} className="text-violet-300/80 text-sm italic">{rc}</li>
-                    ))}
-                  </ul>
-                </div>
-              )}
+              <p className="text-violet-200 text-md leading-relaxed mb-2">{consequences.affectedCharacter.text}</p>
+              <p className="text-violet-300/80 text-sm italic border-l-2 border-violet-800/50 pl-4">{consequences.characterReaction.text}</p>
+            </div>
+
+            {/* Strategic Consequence */}
+            <div className="relative">
+              <div className="absolute -left-[41px] top-1 w-6 h-6 rounded-full bg-slate-900 border border-violet-600"></div>
+              <h3 className="text-violet-500 font-cinzel tracking-widest text-sm mb-2 uppercase flex items-center gap-4">
+                STRATEGIC CONSEQUENCE
+                <span className="text-[10px] px-2 py-1 bg-slate-900 border border-violet-800 text-violet-400">{consequences.strategicConsequence.confidence}</span>
+              </h3>
+              <p className="text-violet-200 text-md leading-relaxed">{consequences.strategicConsequence.text}</p>
             </div>
 
             {/* Narrative / Short-term */}
             <div className="relative group">
               <div className="absolute -left-[41px] top-1 w-6 h-6 rounded-full bg-violet-900 border border-violet-400 shadow-[0_0_10px_rgba(139,92,246,0.5)]"></div>
-              <h3 className="text-violet-400 font-cinzel tracking-widest text-sm mb-2 uppercase">SHORT-TERM DIVERGENCE</h3>
+              <h3 className="text-violet-400 font-cinzel tracking-widest text-sm mb-2 uppercase flex items-center gap-4">
+                SHORT-TERM DIVERGENCE
+                <span className="text-[10px] px-2 py-1 bg-violet-950 border border-violet-800 text-violet-300">{consequences.shortTermDivergence.confidence}</span>
+              </h3>
               <div className="absolute -left-12 top-8 opacity-0 group-hover:opacity-100 transition-opacity">
-                <VoicePlayer characterId="sanjaya" text={consequences.narrative} />
+                {consequences.narrative && <VoicePlayer characterId="sanjaya" text={consequences.narrative} />}
               </div>
-              <p className="text-violet-100 text-lg leading-relaxed font-light">
+              <p className="text-violet-100 text-lg leading-relaxed font-light mb-4">
                 {consequences.narrative}
+              </p>
+              <p className="text-violet-300 text-md leading-relaxed italic border-l-2 border-violet-600/50 pl-4">
+                {consequences.shortTermDivergence.text}
               </p>
             </div>
 
             {/* Future Divergence */}
             <div className="relative">
-              <div className="absolute -left-[41px] top-1 w-6 h-6 rounded-full bg-slate-900 border border-violet-600"></div>
-              <h3 className="text-violet-500 font-cinzel tracking-widest text-sm mb-2 uppercase">FUTURE POTENTIAL</h3>
-              <ul className="space-y-2">
-                {consequences.futureDivergences.map((fd, i) => (
-                  <li key={i} className="text-violet-300 text-md leading-relaxed">{fd}</li>
-                ))}
-              </ul>
+              <div className="absolute -left-[41px] top-1 w-6 h-6 rounded-full bg-slate-900 border border-violet-600 opacity-50"></div>
+              <h3 className="text-violet-500/70 font-cinzel tracking-widest text-sm mb-2 uppercase flex items-center gap-4">
+                LONG-TERM POTENTIAL
+                <span className="text-[10px] px-2 py-1 bg-slate-900 border border-violet-800/50 text-violet-500/70">{consequences.longTermDivergence.confidence}</span>
+              </h3>
+              <p className="text-violet-400/80 text-md leading-relaxed">
+                {consequences.longTermDivergence.text}
+              </p>
             </div>
           </div>
           
@@ -154,11 +162,24 @@ export default function AlternateTimelineView({ branchId }: AlternateTimelineVie
             "{consequences.canonicalReminder}"
           </p>
           
-          <Link href="/kurukshetra">
-            <button className="px-8 py-4 bg-transparent border border-amber-500/50 text-amber-500 hover:bg-amber-950/30 hover:border-amber-400 transition font-cinzel tracking-widest">
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-6">
+            <Link href={`/chamber?scenario=karna-dilemma&branchId=${branchId}`}>
+              <button className="px-8 py-4 bg-violet-900/40 border border-violet-500/50 text-violet-300 hover:bg-violet-800/60 hover:border-violet-400 transition font-cinzel tracking-widest flex items-center gap-2 shadow-[0_0_15px_rgba(139,92,246,0.3)]">
+                EXPLORE ALTERNATE CHAMBER
+              </button>
+            </Link>
+
+            <button 
+              onClick={async () => {
+                const { restoreCanonicalSessionState } = await import('@/app/actions/warState');
+                await restoreCanonicalSessionState('day-17');
+                router.push('/kurukshetra/day/day-17');
+              }}
+              className="px-8 py-4 bg-transparent border border-amber-500/50 text-amber-500 hover:bg-amber-950/30 hover:border-amber-400 transition font-cinzel tracking-widest"
+            >
               RESTORE CANONICAL TIMELINE
             </button>
-          </Link>
+          </div>
         </div>
       </div>
     </div>
