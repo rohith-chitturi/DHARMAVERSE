@@ -42,6 +42,18 @@ export default function NarrativeChamber() {
     endOfChatRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [turns]);
 
+  // Load from query params
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const scenarioId = params.get("scenario");
+    if (scenarioId) {
+      const scenario = chamberScenarios.find(s => s.scenarioId === scenarioId);
+      if (scenario) {
+        handleStartScenario(scenario);
+      }
+    }
+  }, []);
+
   // Save to Cosmic Archive on completion
   useEffect(() => {
     if (completed && turns.length > 0 && selectedScenario) {
