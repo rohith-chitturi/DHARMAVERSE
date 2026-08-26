@@ -9,11 +9,11 @@
     "lint": "eslint"
   },
   "dependencies": {
-    "@ai-sdk/google": "^3.0.80",
-    "@ai-sdk/react": "^3.0.201",
+    "@ai-sdk/google": "^3.0.113",
+    "@ai-sdk/react": "^3.0.269",
     "@auth/prisma-adapter": "^2.11.3",
     "@prisma/client": "^5.22.0",
-    "ai": "^6.0.199",
+    "ai": "^6.0.266",
     "clsx": "^2.1.1",
     "framer-motion": "^12.40.0",
     "gsap": "^3.15.0",

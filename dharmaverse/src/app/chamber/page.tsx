@@ -97,6 +97,9 @@ export default function NarrativeChamber() {
     setIsGenerating(true);
     
     try {
+      const urlParams = new URLSearchParams(window.location.search);
+      const branchId = urlParams.get("branchId");
+
       const res = await fetch("/api/chamber", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -105,7 +108,8 @@ export default function NarrativeChamber() {
           chamberMemory: { recentStatements: currentTurns },
           userMessage: userMsg,
           mode: mode,
-          settings: settings
+          settings: settings,
+          branchId: branchId
         })
       });
       

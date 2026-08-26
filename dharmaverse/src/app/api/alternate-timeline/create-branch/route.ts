@@ -58,7 +58,7 @@ export async function POST(req: Request) {
     }
 
     // 4. Save Consequences to Branch
-    alternateTimelineEngine.saveConsequences(branch.branchId, consequences);
+    alternateTimelineEngine.saveConsequences(branch.branchId, consequences, consequences.branchSummary);
 
     return Response.json({ branchId: branch.branchId });
   } catch (error) {

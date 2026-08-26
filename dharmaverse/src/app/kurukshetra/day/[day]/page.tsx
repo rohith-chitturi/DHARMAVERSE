@@ -1,9 +1,7 @@
 import React from 'react';
 import { warStateEngine } from '@/lib/kurukshetra/WarStateEngine';
 import Link from 'next/link';
-import BattlefieldMap from '@/components/kurukshetra/BattlefieldMap';
-import DharmaDecision from '@/components/kurukshetra/DharmaDecision';
-import DayNarration from '@/components/kurukshetra/DayNarration';
+import WarRoomDashboard from '@/components/kurukshetra/WarRoomDashboard';
 import { markDiscovered } from '@/lib/services/discoveryService';
 
 export default async function WarDayPage({ params }: { params: Promise<{ day: string }> }) {
@@ -39,86 +37,7 @@ export default async function WarDayPage({ params }: { params: Promise<{ day: st
 
       {/* War Room Content */}
       <main className="max-w-6xl mx-auto px-6 py-12">
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
-          
-          {/* Left Column: Stats & Tension */}
-          <div className="lg:col-span-1 space-y-8">
-            <section className="bg-black/50 border border-amber-900/20 p-6 rounded-lg backdrop-blur">
-              <h4 className="text-amber-500 font-cinzel tracking-widest uppercase text-xs mb-4 border-b border-amber-900/30 pb-2">Commanders</h4>
-              <div className="flex justify-between items-center mb-2">
-                <span className="text-red-400 font-semibold">Kaurava:</span>
-                <span className="text-amber-100 capitalize">{dayData.commanderKaurava}</span>
-              </div>
-              <div className="flex justify-between items-center">
-                <span className="text-blue-400 font-semibold">Pandava:</span>
-                <span className="text-amber-100 capitalize">{dayData.commanderPandava}</span>
-              </div>
-            </section>
-
-            <section className="bg-black/50 border border-amber-900/20 p-6 rounded-lg backdrop-blur">
-              <h4 className="text-amber-500 font-cinzel tracking-widest uppercase text-xs mb-4 border-b border-amber-900/30 pb-2">Active Tensions</h4>
-              <ul className="space-y-3">
-                {dayData.tensions.map((tension, i) => (
-                  <li key={i} className="text-amber-100/70 text-sm leading-relaxed flex gap-2">
-                    <span className="text-red-600 mt-1">♦</span> {tension}
-                  </li>
-                ))}
-              </ul>
-            </section>
-          </div>
-
-          {/* Right Column: Events & Interactive Layers */}
-          <div className="lg:col-span-2 space-y-12">
-            
-            {/* AI Narrative */}
-            <DayNarration warDayId={dayData.id} />
-
-            {/* Major Events */}
-            <section>
-              <h3 className="text-2xl font-cinzel text-amber-500 mb-6 flex items-center gap-4">
-                <span className="w-8 h-px bg-amber-500/50"></span>
-                Canonical Events
-                <span className="flex-1 h-px bg-amber-500/10"></span>
-              </h3>
-              <div className="space-y-4">
-                {dayData.majorEvents.map((event, i) => (
-                  <div key={i} className="p-4 bg-gradient-to-r from-red-950/20 to-transparent border-l border-red-900/50 text-amber-100/80">
-                    {event}
-                  </div>
-                ))}
-              </div>
-            </section>
-
-            {/* Battlefield SVG Visualization */}
-            <section>
-              <BattlefieldMap dayId={dayData.id} />
-            </section>
-
-            {/* Chamber Integration */}
-            <section className="grid grid-cols-2 gap-6">
-              <Link href={`/chamber?scenario=${dayData.id.replace('-', '_')}_pandava`} className="block">
-                <div className="p-6 h-full border border-blue-900/30 bg-blue-950/10 hover:bg-blue-950/20 transition cursor-pointer text-center group">
-                  <h4 className="text-blue-400 font-cinzel tracking-widest uppercase mb-2">Pandava Camp</h4>
-                  <p className="text-xs text-blue-200/50 group-hover:text-blue-200/80 transition">Enter the Akashic Chamber</p>
-                </div>
-              </Link>
-              <Link href={`/chamber?scenario=${dayData.id.replace('-', '_')}_kaurava`} className="block">
-                <div className="p-6 h-full border border-red-900/30 bg-red-950/10 hover:bg-red-950/20 transition cursor-pointer text-center group">
-                  <h4 className="text-red-400 font-cinzel tracking-widest uppercase mb-2">Kaurava Camp</h4>
-                  <p className="text-xs text-red-200/50 group-hover:text-red-200/80 transition">Enter the Akashic Chamber</p>
-                </div>
-              </Link>
-            </section>
-
-            {/* Critical Decision */}
-            {dayData.criticalDecisions.length > 0 && (
-              <section className="mt-16 pt-12 border-t border-amber-900/30">
-                <DharmaDecision decision={dayData.criticalDecisions[0]} dayId={dayData.id} />
-              </section>
-            )}
-
-          </div>
-        </div>
+        <WarRoomDashboard dayData={dayData} />
       </main>
     </div>
   );

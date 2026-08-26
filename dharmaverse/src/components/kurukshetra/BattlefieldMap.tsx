@@ -1,14 +1,23 @@
 'use client';
 
 import React from 'react';
+import { DayState } from '@/data/kurukshetra';
 
 interface BattlefieldMapProps {
   dayId: string;
+  currentState?: DayState;
 }
 
-export default function BattlefieldMap({ dayId }: BattlefieldMapProps) {
+export default function BattlefieldMap({ dayId, currentState }: BattlefieldMapProps) {
   // Currently, we only implement Day 17.
   // The Map visualizes the Makara Vyuha (Crocodile Formation) used by Karna.
+
+  // Helper to determine positions based on state
+  const isEngaged = currentState === 'KARNA_ENGAGED' || currentState === 'CRITICAL_MOMENT' || currentState === 'DECISION_AVAILABLE';
+  const isCritical = currentState === 'CRITICAL_MOMENT' || currentState === 'DECISION_AVAILABLE';
+  
+  const karnaPos = isEngaged ? { x: 550, y: 300 } : { x: 750, y: 300 };
+  const arjunaPos = isEngaged ? { x: 450, y: 300 } : { x: 250, y: 300 };
 
   return (
     <div className="w-full h-96 bg-stone-950 relative overflow-hidden rounded-lg border border-amber-900/30 shadow-[inset_0_0_50px_rgba(0,0,0,0.8)]">
@@ -29,12 +38,17 @@ export default function BattlefieldMap({ dayId }: BattlefieldMapProps) {
 
         {/* Kurukshetra River / Features */}
         <path d="M -100 100 Q 300 150 500 300 T 1100 400" fill="none" stroke="rgba(255,50,50,0.05)" strokeWidth="40" />
+        
+        {/* Mud Patch for Critical Moment */}
+        {isCritical && (
+          <ellipse cx={karnaPos.x} cy={karnaPos.y + 10} rx="40" ry="20" fill="rgba(100,50,20,0.4)" stroke="rgba(150,80,30,0.6)" className="animate-pulse" />
+        )}
 
         {/* Makara Vyuha (Crocodile Formation) - Kaurava - Red/Amber */}
-        <g className="kaurava-formation animate-pulse-slow">
+        <g className="kaurava-formation transition-all duration-1000 ease-in-out" transform={`translate(${karnaPos.x - 750}, 0)`}>
           {/* Head (Karna) */}
           <polygon points="700,300 750,250 800,300 750,350" fill="rgba(200,50,50,0.2)" stroke="rgba(255,100,100,0.6)" strokeWidth="2" />
-          <circle cx="750" cy="300" r="10" fill="#ef4444" className="animate-ping" />
+          <circle cx="750" cy="300" r={isCritical ? "6" : "10"} fill="#ef4444" className={isCritical ? "" : "animate-ping"} />
           <text x="750" y="280" fill="#fca5a5" fontSize="12" textAnchor="middle" className="font-cinzel tracking-widest">KARNA</text>
           
           {/* Body/Legs */}
@@ -46,7 +60,7 @@ export default function BattlefieldMap({ dayId }: BattlefieldMapProps) {
         </g>
 
         {/* Pandava Forces - Blue/Cyan */}
-        <g className="pandava-formation">
+        <g className="pandava-formation transition-all duration-1000 ease-in-out" transform={`translate(${arjunaPos.x - 250}, 0)`}>
           {/* Arjuna & Krishna */}
           <polygon points="300,300 250,250 200,300 250,350" fill="rgba(50,150,255,0.15)" stroke="rgba(100,200,255,0.6)" strokeWidth="2" />
           <circle cx="250" cy="300" r="10" fill="#3b82f6" />
