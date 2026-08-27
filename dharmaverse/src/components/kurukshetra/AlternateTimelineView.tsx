@@ -1,7 +1,6 @@
 'use client';
 
 import React, { useEffect, useState } from 'react';
-import { SimulationConsequences } from '@/data/kurukshetra';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import VoicePlayer from '@/components/VoicePlayer';
@@ -11,27 +10,20 @@ interface AlternateTimelineViewProps {
 }
 
 export default function AlternateTimelineView({ branchId }: AlternateTimelineViewProps) {
-  const [consequences, setConsequences] = useState<SimulationConsequences | null>(null);
+  const [branchData, setBranchData] = useState<any>(null);
   const [error, setError] = useState<string | null>(null);
   const router = useRouter();
 
-  // In a real app we'd fetch this from the DB using the branchId.
-  // For the vertical slice, since we redirect after hitting the API, we can fetch the branch state.
   useEffect(() => {
-    // We can simulate fetching the branch data here.
-    // However, since AlternateTimelineEngine is server-side memory for now, we'd need an API to fetch it.
-    // Let's create a quick fetch.
     const fetchBranch = async () => {
       try {
         const res = await fetch(`/api/alternate-timeline/branch/${branchId}`);
         if (!res.ok) throw new Error('Failed to load simulation branch');
         const data = await res.json();
         
-        if (data.consequences) {
-          setConsequences(data.consequences);
+        if (data.causalNodes) {
+          setBranchData(data);
         } else {
-          // If consequences are null, it means the API is still generating or failed.
-          // In this vertical slice, the initial POST creates AND generates.
           setError("Simulation data is incomplete.");
         }
       } catch (e: any) {
@@ -54,7 +46,7 @@ export default function AlternateTimelineView({ branchId }: AlternateTimelineVie
     );
   }
 
-  if (!consequences) {
+  if (!branchData) {
     return (
       <div className="min-h-screen bg-black text-violet-400 flex flex-col items-center justify-center font-cinzel">
         <div className="animate-spin rounded-full h-16 w-16 border-t-2 border-b-2 border-violet-500 mb-4"></div>
@@ -81,88 +73,58 @@ export default function AlternateTimelineView({ branchId }: AlternateTimelineVie
           <h1 className="text-4xl md:text-5xl font-cinzel text-violet-100 drop-shadow-[0_0_15px_rgba(139,92,246,0.5)]">
             ALTERNATE TIMELINE
           </h1>
+          <p className="mt-4 text-violet-300/80 font-cinzel text-lg">{branchData.branchSummary}</p>
         </header>
 
         <div className="space-y-12">
           {/* Causal Chain */}
-          
           <div className="relative border-l-2 border-violet-900/50 pl-8 ml-4 space-y-12">
             
-            {/* Immediate Consequence */}
-            <div className="relative">
-              <div className="absolute -left-[41px] top-1 w-6 h-6 rounded-full bg-violet-900 border border-violet-400 shadow-[0_0_10px_rgba(139,92,246,0.5)]"></div>
-              <h3 className="text-violet-400 font-cinzel tracking-widest text-sm mb-2 uppercase flex items-center gap-4">
-                IMMEDIATE EFFECT
-                <span className="text-[10px] px-2 py-1 bg-violet-950 border border-violet-800 text-violet-300">{consequences.immediateConsequence.confidence}</span>
-              </h3>
-              <p className="text-violet-100 text-lg leading-relaxed">{consequences.immediateConsequence.text}</p>
-            </div>
-
-            {/* Affected Character & Reaction */}
-            <div className="relative">
-              <div className="absolute -left-[41px] top-1 w-6 h-6 rounded-full bg-slate-900 border border-violet-600"></div>
-              <h3 className="text-violet-500 font-cinzel tracking-widest text-sm mb-2 uppercase flex items-center gap-4">
-                CHARACTER REACTION
-                <span className="text-[10px] px-2 py-1 bg-slate-900 border border-violet-800 text-violet-400">{consequences.characterReaction.confidence}</span>
-              </h3>
-              <div className="mb-2">
-                <span className="px-3 py-1 bg-violet-950/50 border border-violet-800/50 rounded text-violet-200 capitalize text-sm">
-                  {consequences.affectedCharacter.characterId || "Character"}
-                </span>
+            {branchData.causalNodes.map((node: any, idx: number) => (
+              <div key={node.id || idx} className="relative">
+                <div className="absolute -left-[41px] top-1 w-6 h-6 rounded-full bg-violet-900 border border-violet-400 shadow-[0_0_10px_rgba(139,92,246,0.5)]"></div>
+                <h3 className="text-violet-400 font-cinzel tracking-widest text-sm mb-2 uppercase flex items-center gap-4">
+                  {node.type.replace('_', ' ')}
+                  <span className="text-[10px] px-2 py-1 bg-violet-950 border border-violet-800 text-violet-300">{node.confidence}</span>
+                </h3>
+                <p className="text-violet-100 text-lg leading-relaxed">{node.description}</p>
+                {node.affectedCharacters?.length > 0 && (
+                  <div className="flex gap-2 mt-3">
+                    {node.affectedCharacters.map((c: string, i: number) => (
+                      <span key={i} className="text-xs px-2 py-1 border border-violet-800/50 bg-violet-900/20 text-violet-300/80 uppercase font-cinzel">
+                        {c}
+                      </span>
+                    ))}
+                  </div>
+                )}
               </div>
-              <p className="text-violet-200 text-md leading-relaxed mb-2">{consequences.affectedCharacter.text}</p>
-              <p className="text-violet-300/80 text-sm italic border-l-2 border-violet-800/50 pl-4">{consequences.characterReaction.text}</p>
-            </div>
+            ))}
 
-            {/* Strategic Consequence */}
-            <div className="relative">
-              <div className="absolute -left-[41px] top-1 w-6 h-6 rounded-full bg-slate-900 border border-violet-600"></div>
-              <h3 className="text-violet-500 font-cinzel tracking-widest text-sm mb-2 uppercase flex items-center gap-4">
-                STRATEGIC CONSEQUENCE
-                <span className="text-[10px] px-2 py-1 bg-slate-900 border border-violet-800 text-violet-400">{consequences.strategicConsequence.confidence}</span>
-              </h3>
-              <p className="text-violet-200 text-md leading-relaxed">{consequences.strategicConsequence.text}</p>
-            </div>
-
-            {/* Narrative / Short-term */}
-            <div className="relative group">
-              <div className="absolute -left-[41px] top-1 w-6 h-6 rounded-full bg-violet-900 border border-violet-400 shadow-[0_0_10px_rgba(139,92,246,0.5)]"></div>
-              <h3 className="text-violet-400 font-cinzel tracking-widest text-sm mb-2 uppercase flex items-center gap-4">
-                SHORT-TERM DIVERGENCE
-                <span className="text-[10px] px-2 py-1 bg-violet-950 border border-violet-800 text-violet-300">{consequences.shortTermDivergence.confidence}</span>
-              </h3>
-              <div className="absolute -left-12 top-8 opacity-0 group-hover:opacity-100 transition-opacity">
-                {consequences.narrative && <VoicePlayer characterId="sanjaya" text={consequences.narrative} />}
+            {/* Speculative Future */}
+            {branchData.divergences?.length > 0 && (
+              <div className="relative opacity-60 mt-12">
+                <div className="absolute -left-[41px] top-1 w-6 h-6 rounded-full bg-slate-900 border border-slate-600 border-dashed"></div>
+                <h3 className="text-slate-400 font-cinzel tracking-widest text-sm mb-2 uppercase flex items-center gap-4">
+                  SPECULATIVE FUTURE
+                  <span className="text-[10px] px-2 py-1 bg-slate-900 border border-slate-700 text-slate-400">UNWRITTEN</span>
+                </h3>
+                <ul className="list-disc list-inside space-y-2 text-slate-300 italic">
+                  {branchData.divergences.map((div: string, idx: number) => (
+                    <li key={idx}>{div}</li>
+                  ))}
+                </ul>
               </div>
-              <p className="text-violet-100 text-lg leading-relaxed font-light mb-4">
-                {consequences.narrative}
-              </p>
-              <p className="text-violet-300 text-md leading-relaxed italic border-l-2 border-violet-600/50 pl-4">
-                {consequences.shortTermDivergence.text}
-              </p>
-            </div>
-
-            {/* Future Divergence */}
-            <div className="relative">
-              <div className="absolute -left-[41px] top-1 w-6 h-6 rounded-full bg-slate-900 border border-violet-600 opacity-50"></div>
-              <h3 className="text-violet-500/70 font-cinzel tracking-widest text-sm mb-2 uppercase flex items-center gap-4">
-                LONG-TERM POTENTIAL
-                <span className="text-[10px] px-2 py-1 bg-slate-900 border border-violet-800/50 text-violet-500/70">{consequences.longTermDivergence.confidence}</span>
-              </h3>
-              <p className="text-violet-400/80 text-md leading-relaxed">
-                {consequences.longTermDivergence.text}
-              </p>
-            </div>
+            )}
           </div>
           
         </div>
 
         <div className="mt-20 pt-8 border-t border-violet-900/50 text-center">
           <p className="text-sm text-violet-400/50 font-inter italic mb-8 max-w-lg mx-auto">
-            "{consequences.canonicalReminder}"
+            "You have chosen a path untrodden. The consequences are yours to bear."
           </p>
           
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-6">
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-6 mb-10">
             <Link href={`/chamber?scenario=karna-dilemma&branchId=${branchId}`}>
               <button className="px-8 py-4 bg-violet-900/40 border border-violet-500/50 text-violet-300 hover:bg-violet-800/60 hover:border-violet-400 transition font-cinzel tracking-widest flex items-center gap-2 shadow-[0_0_15px_rgba(139,92,246,0.3)]">
                 EXPLORE ALTERNATE CHAMBER
@@ -172,8 +134,8 @@ export default function AlternateTimelineView({ branchId }: AlternateTimelineVie
             <button 
               onClick={async () => {
                 const { restoreCanonicalSessionState } = await import('@/app/actions/warState');
-                await restoreCanonicalSessionState('day-17');
-                router.push('/kurukshetra/day/day-17');
+                await restoreCanonicalSessionState(branchData.originDay);
+                router.push(`/kurukshetra/day/${branchData.originDay}`);
               }}
               className="px-8 py-4 bg-transparent border border-amber-500/50 text-amber-500 hover:bg-amber-950/30 hover:border-amber-400 transition font-cinzel tracking-widest"
             >

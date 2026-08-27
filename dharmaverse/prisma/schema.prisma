@@ -30,6 +30,7 @@ model User {
   preferences          UserPreference?
   characterInteractions CharacterInteraction[]
   eventInteractions    EventInteraction[]
+  simulationBranches   SimulationBranch[]
 
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @updatedAt
@@ -188,4 +189,33 @@ model EventInteraction {
   createdAt          DateTime @default(now())
   
   @@unique([userId, eventId, interactionType])
+}
+
+model SimulationBranch {
+  id                   String   @id @default(cuid())
+  userId               String
+  user                 User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  parentBranchId       String?
+  parentBranch         SimulationBranch?  @relation("BranchTree", fields: [parentBranchId], references: [id])
+  childBranches        SimulationBranch[] @relation("BranchTree")
+
+  originDay            String
+  originEventId        String
+  originState          String
+  decisionId           String
+  chosenOptionId       String
+  
+  status               String   @default("ACTIVE") // ACTIVE, TERMINATED, RESTORED
+  confidence           String   // HIGH_CONFIDENCE, SUPPORTED, etc.
+  
+  branchSummary        String   @db.Text
+  causalNodes          Json     // Array of causal nodes
+  affectedCharacters   Json     // Array of character IDs
+  alteredEvents        Json     // Array of altered events
+  alteredRelationships Json?    // Optional relationship changes
+  divergences          Json?    // Optional speculative future divergences
+  
+  createdAt            DateTime @default(now())
+  updatedAt            DateTime @updatedAt
 }

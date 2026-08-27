@@ -62,11 +62,25 @@ export default function DharmaDecision({ decision, dayId }: DharmaDecisionProps)
   }
 
   return (
-    <div className="w-full bg-stone-950 border border-amber-900/50 p-6 md:p-10 shadow-[0_0_50px_rgba(0,0,0,0.8)] rounded-xl relative overflow-hidden">
+    <div className={`w-full bg-stone-950 border border-amber-900/50 p-6 md:p-10 shadow-[0_0_50px_rgba(0,0,0,0.8)] rounded-xl relative overflow-hidden transition-all duration-1000 ${isSimulating ? 'scale-105 filter hue-rotate-90 saturate-200 blur-[2px]' : ''}`}>
       {/* Visual background for decision state */}
-      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-red-900/20 via-black to-black pointer-events-none"></div>
+      <div className={`absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] pointer-events-none transition-colors duration-1000 ${isSimulating ? 'from-purple-900/60 via-red-950 to-black' : 'from-red-900/20 via-black to-black'}`}></div>
       
-      <div className="relative z-10 grid grid-cols-1 md:grid-cols-2 gap-10">
+      {isSimulating && (
+        <div className="absolute inset-0 z-50 flex flex-col items-center justify-center bg-black/80 backdrop-blur-sm">
+          <div className="text-3xl font-cinzel text-purple-400 mb-4 animate-pulse tracking-widest text-center px-4">
+            CAUSALITY FRACTURE DETECTED
+          </div>
+          <div className="text-sm font-inter text-red-300 mb-8 max-w-md text-center opacity-80">
+            Computing ripple effects across the timeline...
+          </div>
+          <div className="w-64 h-1 bg-stone-800 rounded-full overflow-hidden">
+            <div className="h-full bg-gradient-to-r from-purple-600 to-red-500 animate-[shimmer_2s_infinite] w-1/2"></div>
+          </div>
+        </div>
+      )}
+
+      <div className={`relative z-10 grid grid-cols-1 md:grid-cols-2 gap-10 ${isSimulating ? 'opacity-30 pointer-events-none' : ''}`}>
         
         {/* Left Column: Context */}
         <div>

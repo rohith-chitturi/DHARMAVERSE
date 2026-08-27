@@ -4,7 +4,9 @@ import { characters } from '@/data/lore';
 import { chamberScenarios } from '@/data/chamberScenarios';
 import { getUserNarrativeContext } from '@/lib/services/journeyService';
 import { contextAssembler } from '@/lib/intelligence/ContextAssembler';
-import { alternateTimelineEngine } from '@/lib/kurukshetra/AlternateTimelineEngine';
+import { PrismaClient } from '@prisma/client';
+
+const prisma = new PrismaClient();
 
 export const maxDuration = 45;
 
@@ -26,13 +28,15 @@ export async function POST(req: Request) {
 
     let branchContext = '';
     if (branchId) {
-      const branch = alternateTimelineEngine.getBranch(branchId);
+      const branch = await prisma.simulationBranch.findUnique({
+        where: { id: branchId }
+      });
       if (branch) {
         branchContext = `
 ## ALTERNATE TIMELINE REALITY (CRITICAL)
 You are currently inside an ALTERNATE SIMULATION BRANCH. The canonical timeline has been altered.
 The user made the following decision: ${branch.chosenOptionId}
-Branch Memory/Consequences: ${branch.branchSummary || branch.consequences?.narrative || 'The timeline was altered.'}
+Branch Memory/Consequences: ${branch.branchSummary}
 
 You must acknowledge this new reality. Do not treat the canonical facts that were altered as true. Your core identity remains, but you exist in this new timeline.
 `;
