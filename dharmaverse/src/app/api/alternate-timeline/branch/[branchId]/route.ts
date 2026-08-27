@@ -1,9 +1,13 @@
-import { alternateTimelineEngine } from '@/lib/kurukshetra/AlternateTimelineEngine';
+import { PrismaClient } from '@prisma/client';
+
+const prisma = new PrismaClient();
 
 export async function GET(req: Request, { params }: { params: Promise<{ branchId: string }> }) {
   try {
     const resolvedParams = await params;
-    const branch = alternateTimelineEngine.getBranch(resolvedParams.branchId);
+    const branch = await prisma.simulationBranch.findUnique({
+      where: { id: resolvedParams.branchId }
+    });
 
     if (!branch) {
       return Response.json({ error: "Branch not found" }, { status: 404 });
